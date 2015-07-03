@@ -1,0 +1,45 @@
+{
+  "name": "frontdesk",
+  "version": "0.0.1",
+  "homepage": "https://github.com/segue-org/frontdesk",
+  "authors": [
+    "Felipe Mobus <fmobus@gmail.com>"
+  ],
+  "description": "Segue frontdesk console",
+  "main": "app/index.js",
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.1",
+    "angular-ui-router": "~0.2.11",
+    "angular-gettext": "~1.1.4",
+    "font-awesome": "~4.2.0",
+    "ngstorage": "~0.3.0",
+    "lodash": "~3.9.3",
+    "restangular": "~1.4.0",
+    "tv4": "~1.1.4",
+    "angular-http-auth": "~1.2.2",
+    "ngDialog": "~0.4.0",
+    "angular-gravatar": "~0.2.4",
+    "angular-loading-bar": "~0.6.0",
+    "ngtoast": "~1.4.0",
+    "angular-input-masks": "~1.3.1",
+    "angular-ui-utils": "~0.2.3",
+    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.3.8"
+  },
+  "resolutions": {
+    "angular": "1.3.16",
+    "lodash": "~3.9.3"
+  }
+}

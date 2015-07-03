@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="segue.frontdesk">
+  <head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <title>fisl - admin</title>
+    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+    <!-- inject:vendor:css -->
+    <!-- endinject -->
+    <!-- inject:custom:css -->
+    <!-- endinject -->
+    <!-- inject:vendor:js -->
+    <!-- endinject -->
+    <!-- inject:custom:js -->
+    <!-- endinject -->
+    <!-- inject:templates:js -->
+    <!-- endinject -->
+    <script src='config.js'></script>
+  </head>
+  <body ng-controller="FrontDeskController" class="{{ topState }}">
+    <header class="noprint {{ topState }}" ui-view="header">
+    </header>
+
+    <toast translate></toast>
+
+    <aside class="{{ topState }} {{ subState }}">
+      <logged-as></logged-as>
+    </aside>
+
+    <main class="{{ topState }} {{ subState }}" ui-view="main">
+    </main>
+
+    <footer class="noprint">
+      {{ state.name }}
+    </footer>
+  </body>

@@ -1,0 +1,7 @@
+webhost: frontdesk.fisl16.softwarelivre.org
+webport: 80
+sitename: frontdesk
+master_host: fisl16.softwarelivre.org
+api_host: http://segue-api.fisl16.softwarelivre.org
+api_path: /api
+app_path: /var/www/frontdesk.{{ master_host }}

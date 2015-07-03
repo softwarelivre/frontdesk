@@ -1,0 +1,14 @@
+<section class="login">
+  <header>acesso restrito!</header>
+  <form novalidate name="login_form" style="max-height: 210px;">
+    <input type="text" maxlength=80
+          placeholder="email"
+          focusable required ng-model="login.email" />
+    <input type="password"
+          placeholder="senha"
+          ng-model="login.password" />
+    <button ng-click="tryLogin()">
+      entrar!
+    </button>
+  </form>
+</section>
