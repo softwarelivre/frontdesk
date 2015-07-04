@@ -66,7 +66,7 @@
       self.login = function(email, password) {
         if (!email || !password) { return $q.reject(); }
         LocalSession.destroy();
-        return session.post({ email: email, password: password })
+        return session.post({ email: email, password: password, acceptable_roles: ['admin','cashier','frontdesk']})
                       .then(LocalSession.create);
       };
       self.credentials = function() {
