@@ -3,6 +3,7 @@ header.bar.people {
 }
 
 header.query.people {
+  z-index: 20;
   form {
     input {
       font-size: xx-large;
@@ -16,6 +17,7 @@ $paid-bg: lightgreen;
 $stale-bg: lightgray;
 
 main.people-search {
+  z-index: 10;
   position: relative;
   top: 5rem;
   form {

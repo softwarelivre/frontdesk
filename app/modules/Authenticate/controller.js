@@ -13,8 +13,7 @@
         .state('authenticate', {
           url: '^/authenticate',
           views: {
-            "header": { templateUrl: 'modules/common/nav.html' },
-            "main":   { controller: 'LoginController',  templateUrl: 'modules/Authenticate/login.html' },
+            "content":   { controller: 'LoginController',  templateUrl: 'modules/Authenticate/login.html' },
           },
         });
     });

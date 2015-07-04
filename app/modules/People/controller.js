@@ -51,6 +51,7 @@
       };
 
       $scope.selectPerson = function($index) {
+        $state.go('people.detail', { id: $scope.results[$index].id });
       };
 
       $scope.keypress = {
