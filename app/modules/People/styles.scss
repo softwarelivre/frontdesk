@@ -88,6 +88,14 @@ main.people-search {
         img { width: 100%; }
       }
 
+      h2 {
+        font-size: large;
+        float: right;
+        margin: 0;
+        padding: 0;
+      }
+
+
       p {
         font-size: 130%;
         width: 50%;
@@ -96,11 +104,9 @@ main.people-search {
         padding: 0.1rem 0;
       }
 
-      h2 {
-        font-size: large;
-        float: right;
-        margin: 0;
-        padding: 0;
+      .empty {
+        color: maroon;
+        font-style: italic;
       }
 
     }

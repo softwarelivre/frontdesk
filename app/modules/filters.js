@@ -26,6 +26,12 @@
         return (new Date(timestamp)).toLocaleDateString();
       };
     })
+    .filter('document', function() {
+      return function(input) {
+        if (!input) { return; }
+        return input.replace(/(\d\d\d)/g,"$1.").replace(/.(\d\d)$/,"-$1");
+      };
+    })
     .filter('datetime_locale', function(Config) {
       return function(input, timezone) {
         if (!timezone) { timezone = Config.TIMEZONE; }

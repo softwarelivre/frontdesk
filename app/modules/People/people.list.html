@@ -30,8 +30,8 @@
 
     <p>{{ person.email }}</p>
 
-    <p ng-hide="person.name" class="empty">sem documento</p>
-    <p ng-show="person.name">{{ person.document }}</p>
+    <p ng-hide="person.document" class="empty">sem documento</p>
+    <p ng-show="person.document">{{ person.document | document }}</p>
 
     <h2>
       <b>{{ person.category }}</b>
