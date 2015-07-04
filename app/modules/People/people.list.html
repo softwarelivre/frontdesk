@@ -1,0 +1,41 @@
+<header ng-show="!results.length && !loading">
+  <h1>
+    ☹
+  </h1>
+  <h1>
+    nenhum resultado encontrado
+  </h1>
+  <small>
+    <b>não é necessário digitar o nome completo,</b><br/>
+    em geral basta digitar o primeiro nome<br/>
+    ou um dos sobrenomes do participante
+  </small>
+</header>
+
+<form ng-class="{ loading: loading }">
+  {{ focusedIndex }}
+  <button ng-repeat="person in results"
+          ui-sref="person({ xid: person.xid })"
+          focusable="result-{{$index}}"
+          ng-focus="focusHasMovedTo($index)"
+          class="status-{{person.status}}"
+          ui-keydown="keypress.person($index)">
+    <figure>
+      <figcaption>{{ person.id }}</figcaption>
+      <img gravatar-src="person.email" gravatar-size="70">
+    </figure>
+
+    <h1 ng-class="{ 'empty': !person.name }">{{ person.name || 'sem nome' }}</h1>
+
+    <p ng-class="{ 'empty': !person.email }"   >{{ person.email    || 'sem email' }}</p>
+    <p ng-class="{ 'empty': !person.document }">{{ person.document || 'sem documento' }}</p>
+
+    <h2>
+      <b>{{ person.category }}</b>
+      -
+      <span ng-show="person.has_valid_ticket">entrada autorizada</span>
+      <span ng-hide="person.has_valid_ticket">entrada pendente</span>
+    </h2>
+  </button>
+</form>
+<br class="clear" />

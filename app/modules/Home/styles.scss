@@ -5,7 +5,6 @@ body.home {
 
 header.home {
   z-index: 0;
-  img.logo { display: none; }
   h1, label { z-index: 200; }
 }
 main.home {
@@ -14,4 +13,7 @@ main.home {
     padding: 2em 0;
     font-size: large;
   }
+}
+aside.menu.home {
+  display: none;
 }

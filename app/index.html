@@ -18,16 +18,29 @@
     <script src='config.js'></script>
   </head>
   <body ng-controller="FrontDeskController" class="{{ topState }}">
-    <header class="noprint {{ topState }}" ui-view="header">
+    <header class="bar noprint {{ topState }}">
+        <img class="logo" ng-click="home()" src="/images/logo-fisl-small.png"/>
+        <h1>
+          <a ui-sref="home">
+            segue - frontdesk
+          </a>
+        </h1>
     </header>
+
+    <aside class="menu {{topState}} {{subState}}">
+      menu
+    </aside>
 
     <toast translate></toast>
 
-    <aside class="{{ topState }} {{ subState }}">
+    <aside class="login {{ topState }} {{ subState }}">
       <logged-as></logged-as>
     </aside>
 
-    <main class="{{ topState }} {{ subState }}" ui-view="main">
+    <header class="query {{topState}} {{subState}}" ui-view="query">
+    </header>
+
+    <main class="{{ topState }} {{ subState }}" ui-view="content">
     </main>
 
     <footer class="noprint">

@@ -20,6 +20,7 @@
       'segue.frontdesk.directives',
       'segue.frontdesk.home',
       'segue.frontdesk.authenticate',
+      'segue.frontdesk.people',
     ])
     .controller('FrontDeskController', function($scope, $state, Auth, Config) {
       $scope.$on('$stateChangeSuccess', function(event, newState) {
