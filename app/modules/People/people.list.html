@@ -19,16 +19,19 @@
           focusable="result-{{$index}}"
           ng-focus="focusHasMovedTo($index)"
           class="status-{{person.status}}"
-          ui-keydown="keypress.person($index)">
+          ui-keydown="keypress.person($index, $event)">
     <figure>
-      <figcaption>{{ person.id }}</figcaption>
       <img gravatar-src="person.email" gravatar-size="70">
+      <figcaption>{{ person.id }}</figcaption>
     </figure>
 
-    <h1 ng-class="{ 'empty': !person.name }">{{ person.name || 'sem nome' }}</h1>
+    <h1 ng-hide="person.name" class="empty">sem nome</h1>
+    <h1 ng-show="person.name">{{ person.name }}</h1>
 
-    <p ng-class="{ 'empty': !person.email }"   >{{ person.email    || 'sem email' }}</p>
-    <p ng-class="{ 'empty': !person.document }">{{ person.document || 'sem documento' }}</p>
+    <p>{{ person.email }}</p>
+
+    <p ng-hide="person.name" class="empty">sem documento</p>
+    <p ng-show="person.name">{{ person.document }}</p>
 
     <h2>
       <b>{{ person.category }}</b>
