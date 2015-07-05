@@ -61,6 +61,8 @@
       RestangularProvider.setOnElemRestangularized(function(thing, isCollection, model, Restangular) {
         if (!isCollection) {
           thing.follow = function(name) {
+            if (!thing.links) return null;
+            if (!thing.links[name]) return null;
             var path = thing.links[name].href.replace(/.api./,'');
             return Restangular.one(path).getList();
           };

@@ -6,6 +6,7 @@
       'ui.keypress',
       'segue.frontdesk.authenticate.service',
       'segue.frontdesk.people.controller',
+      'segue.frontdesk.people.steps',
       'segue.frontdesk.people.service'
     ])
     .config(function($stateProvider) {
@@ -16,7 +17,7 @@
           views: { }
         })
         .state('people.search', {
-          url: '/people/:query',
+          url: '/:query',
           views: {
             "query@":   { controller: 'PersonSearchController', templateUrl: 'modules/People/people.query.html' },
             "content@": { controller: 'PersonSearchController', templateUrl: 'modules/People/people.list.html' }
@@ -24,11 +25,61 @@
           resolve: {
             people: function(People, $stateParams) { return People.lookup({ needle: $stateParams.query }); },
           }
+        })
+        .state('people.person', {
+          url: '/:xid',
+          views: {
+            "content@": { controller: 'PersonController', templateUrl: 'modules/People/person.html' }
+          },
         });
     });
 
   angular
     .module('segue.frontdesk.people.controller', [])
+    .controller('PersonController', function($scope, $state, People, focusOn) {
+      $state.go('people.person.country');
+
+      $scope.fastForward = function(nextState) {
+        $state.go(nextState);
+      };
+
+      $scope.reload = function(nextState) {
+        People.getOne($state.params.xid).then(function(person) {
+          $scope.person = person;
+          if (nextState) { $state.go(nextState); }
+//          if (nextState === 'person') {
+//            $state.go('person');
+//          }
+//          else if ($state.is('person')) {
+//            $state.go(decideState());
+//          }
+//          else if (nextState) {
+//            $state.go(nextState);
+//          }
+        });
+      };
+
+      $scope.autoFocusOption = function(options, currentValue) {
+        $scope.enteredOption = null;
+        if (_.includes(options, currentValue)) {
+          $scope.focusOption(options, options.indexOf(currentValue));
+        } else if (currentValue) {
+          $scope.enteredOption = currentValue;
+          $scope.focusOption(options, options.length);
+        } else {
+          $scope.focusOption(options, 0);
+        }
+      };
+
+      $scope.focusOption = function(options, index) {
+        if (index > options.length) { return; }
+        if (index < 0) { return; }
+        $scope.currentIndex = index;
+        focusOn('option-'+index);
+      };
+
+      $scope.reload();
+    })
     .controller('PersonSearchController', function($scope, $state, $anchorScroll, focusOn, people) {
       $scope.enforceAuth();
       $scope.query = { needle: $state.params.query };
@@ -53,7 +104,7 @@
       };
 
       $scope.selectPerson = function($index) {
-        $state.go('people.detail', { id: $scope.results[$index].id });
+        $state.go('people.person', { xid: $scope.results[$index].id });
       };
 
       $scope.keypress = {

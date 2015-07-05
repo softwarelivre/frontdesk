@@ -15,7 +15,7 @@
 <form ng-class="{ loading: loading }">
   {{ focusedIndex }}
   <button ng-repeat="person in results"
-          ui-sref="person({ xid: person.xid })"
+          ui-sref="people.person({ xid: person.id })"
           focusable="result-{{$index}}"
           ng-focus="focusHasMovedTo($index)"
           class="status-{{person.status}}"
