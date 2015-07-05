@@ -1,0 +1,60 @@
+@import 'modules/common/variables';
+
+main.people-person {
+  section.step {
+    position: absolute;
+    width: $person-header-width * 0.9;
+    top: 5rem;
+
+    border: 1px solid green;
+
+    form {
+      padding-top: 2rem;
+
+      h3 {
+        font-size: 200%;
+      }
+
+      text-align: center;
+      input {
+        font-size: 300%;
+        width: 80%;
+      }
+    }
+    .choose {
+      padding: 0;
+      h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 500%;
+      }
+      h2, h3 {
+        padding: 0;
+      }
+      button {
+        background: lightblue;
+      }
+      button, input[type=text] {
+        font-size: xx-large;
+        width: 25rem;
+        position: relative;
+        margin-bottom: .7rem;
+        padding: 0.3rem;
+        border: 0;
+
+        span {
+          float: right;
+        }
+
+        &:focus:before {
+          top: 0;
+          left: -2rem;
+          content: '❯';
+          font-size: xx-large;
+          color: blue;
+          position: absolute;
+        }
+      }
+    }
+  }
+}

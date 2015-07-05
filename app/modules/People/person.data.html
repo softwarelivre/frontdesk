@@ -1,0 +1,82 @@
+<table class="data" ng-class="{ loading: !person }">
+  <tbody>
+    <tr ng-click="fastForward('person.fill_email')">
+      <th colspan="2">dados básicos</th>
+    </tr>
+    <tr ng-click="fastForward('person.fill_email')">
+      <th ng-class="{ done:   person.email }"   >email</th>
+      <td ng-class="{ empty: !person.email }"   >{{ person.email    || 'não informado' }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.fill_name')">
+      <th ng-class="{ done:   person.name }"    >nome</th>
+      <td ng-class="{ empty: !person.name }"    >{{ person.name     || 'não informado' }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.fill_country')">
+      <th ng-class="{ done:   person.country }" >país</th>
+      <td ng-class="{ empty: !person.country }" >{{ person.country  || 'não informado' }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.fill_city')" ng-hide="isForeign">
+      <th ng-class="{ done:   person.city }"    >cidade</th>
+      <td ng-class="{ empty: !person.city }"    >{{ person.city || 'não informado' }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.fill_document')">
+      <th ng-class="{ done:   person.document }">cpf</th>
+      <td ng-class="{ empty: !person.document }">{{ person.document || 'não informado'}}</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr ng-click="fastForward('person.payment_pending')">
+      <th colspan="2">ingresso</th>
+    </tr>
+    <tr>
+      <th ng-class="{ done:   hasValidTickets }">situação</th>
+      <td ng-class="{ empty: !hasValidTickets }">{{ ticket.status }}</td>
+    </tr>
+    <tr>
+      <th ng-class="{ done:   ticket.grants }">categoria</th>
+      <td ng-class="{ empty: !ticket.grants }">{{ ticket.grants }}</td>
+    </tr>
+    <tr>
+      <th ng-class="{ done:   ticket.method }">forma</th>
+      <td ng-class="{ empty: !ticket.method }">{{ ticket.method }}</td>
+    </tr>
+    <tr ng-show="person.promotionalCode" >
+      <th ng-class="{ done:   person.promotionalCode }">código promocional</th>
+      <td ng-class="{ empty: !person.promotionalCode }">{{ person.promotionalCode.hash }} = {{ person.promotionalCode.offRate }}%</td>
+    </tr>
+  </tbody>
+
+  <tbody ng-show="hasValidTickets">
+    <tr ng-click="fastForward('person.fill_badge_name')">
+      <th colspan="2">etiqueta/material</th>
+    </tr>
+    <tr ng-click="fastForward('person.fill_badge_name')">
+      <th ng-class="{ done:   person.badgeName }">nome</th>
+      <td ng-class="{ empty: !person.badgeName }">{{ person.badgeName }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.fill_badge_corp')">
+      <th ng-class="{ done:   person.badgeCorp }">empresa</th>
+      <td ng-class="{ empty: !person.badgeCorp }">{{ person.badgeCorp }}</td>
+    </tr>
+    <tr ng-click="fastForward('person.print_badge')">
+      <th ng-class="{ done:   !person.badgePrinted.result.error }">impresso?</th>
+      <td ng-hide="person.badgePrinted.result.error">impressora {{ person.badgePrinted.location }}</td>
+      <td ng-show="person.badgePrinted.result.error">
+        erro! clique para tentar de novo
+      </td>
+    </tr>
+
+    <tr ng-click="fastForward('person.give_badge')">
+      <th ng-class="{ done: person.badgeGiven }">entregue?</th>
+      <td ng-show="person.badgeGiven">
+        às {{ person.badgeGiven }}
+      </td>
+      <td ng-hide="person.badgeGiven">
+        nenhuma entrega registrada
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<section class="step" ui-view="step" ng-class="{ loading: !step, trying: trying }">
+</section>

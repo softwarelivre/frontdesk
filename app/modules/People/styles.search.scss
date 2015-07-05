@@ -1,0 +1,112 @@
+@import 'modules/common/variables';
+
+header.bar.people {
+  h1, label { z-index: 200; }
+}
+
+header.query.people {
+  z-index: 20;
+  form {
+    input {
+      font-size: xx-large;
+      width: 100%;
+    }
+  }
+}
+
+main.people-search {
+  z-index: 10;
+  position: relative;
+  top: 5rem;
+  form {
+    width: auto;
+    padding: 0;
+    position: relative;
+
+    button {
+      border: 0;
+      text-align: left;
+      margin: 0.4rem 1rem;
+      padding: 0;
+      float: left;
+      width: 45%;
+      background: lightgray;
+      list-style: none;
+      position: relative;
+      box-shadow: 0px 0px 2px 2px lightgray;
+      height: 6rem;
+
+      &.status-pending { background: $pending-bg; }
+      &.status-paid    { background: $paid-bg;    }
+      &.status-stale   { background: $stale-bg;   opacity: .3}
+
+      &:focus {
+        outline: 5px solid black;
+        &:before {
+          content: '❯';
+          top: 1rem;
+          left: -2.5rem;
+          font-size: 500%;
+          color: black;
+          position: absolute;
+        }
+      }
+
+      h1 {
+        width: 76%;
+        height: 2rem;
+        margin: 0;
+        padding: 0;
+        font-size: x-large;
+        font-weight: bold;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &:hover {
+          white-space: normal;
+        }
+      }
+
+      figure {
+        margin: -3px 0.5rem -4px 0;
+        padding: 0;
+        float: left;
+        width: 17%;
+
+        figcaption {
+          font-weight: bold;
+          text-align: center;
+          width: 100%;
+          font-size: 150%;
+          display: inline-block;
+          padding: 0.2rem 0;
+        }
+
+        img { width: 100%; }
+      }
+
+      h2 {
+        font-size: large;
+        float: right;
+        margin: 0;
+        padding: 0;
+      }
+
+
+      p {
+        font-size: 130%;
+        width: 50%;
+        float: left;
+        margin: 0;
+        padding: 0.1rem 0;
+      }
+
+      .empty {
+        color: maroon;
+        font-style: italic;
+      }
+
+    }
+  }
+}
