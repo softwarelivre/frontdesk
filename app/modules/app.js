@@ -15,6 +15,7 @@
       'restangular',
       'angular-loading-bar',
 
+      'segue.frontdesk.humanized',
       'segue.frontdesk.errors',
       'segue.frontdesk.filters',
       'segue.frontdesk.directives',

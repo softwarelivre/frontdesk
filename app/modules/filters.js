@@ -47,5 +47,10 @@
         }
         return 'R$ ' + formatCurrency(parseFloat(input));
       };
+    })
+    .filter('humanize', function(HumanizedStrings) {
+      return function(input) {
+        return HumanizedStrings[input] || input;
+      };
     });
 })();

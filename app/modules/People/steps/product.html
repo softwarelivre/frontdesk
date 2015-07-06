@@ -1,19 +1,29 @@
 <form class="choose fill">
-  <h3>
-    Qual é a categoria do participante?
-  </h3>
-  <h4>
-    use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de categoria e
-    <kbd>enter</kbd> para selecionar
-  </h4>
+  <div ng-hide="options.length">
+    <h3>Atenção!</h3>
+    <h4>não é possível mudar a categoria deste participante</h4>
+    <h5>
+      <b>motivo:</b>
+      <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
+      <span ng-show="person.category == 'promocode'">código promocional aplicado</span>
+    </h5>
 
-  <button type="button"
-          ng-repeat="option in options"
-          ng-click="selectOptions($index)"
-          ui-keydown="keypress($index)"
-          focusable="option-{{ $index }}">
-          {{ option.category }}:
-          {{ option.price | realbrasileiro }}
-    <span ng-show="option == person.category">*</span>
-  </button>
+    <button type="button" ng-click="doNothing()" focusable="option-0">ok</button>
+  </div>
+
+  <div ng-show="options.length">
+    <h3 ng-show="options.length">Qual é a categoria do participante?</h3>
+    <h4 ng-show="options.length">
+      use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de categoria e
+      <kbd>enter</kbd> para selecionar
+    </h4>
+
+    <button type="button"
+            ng-repeat="option in options" ng-click="selectOptions($index)"
+            ui-keydown="keypress($index)" focusable="option-{{ $index }}">
+            {{ option.category | humanize }}: {{ option.price | realbrasileiro }}
+      <span ng-show="option.id == person.product.id">*</span>
+    </button>
+  </div>
+
 </form>

@@ -30,7 +30,7 @@
     </tr>
     <tr>
       <th ng-class="{ done:   person.category }">categoria</th>
-      <td ng-class="{ empty: !person.category }">{{ person.category }}</td>
+      <td ng-class="{ empty: !person.category }">{{ person.category | humanize }}</td>
     </tr>
     <tr>
       <th ng-class="{ done:   person.has_valid_ticket }">situação</th>

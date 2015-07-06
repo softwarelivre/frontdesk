@@ -102,7 +102,11 @@
     .controller('PersonProductController', function($scope, $state, Config, People, focusOn, person, products, lazyCommit) {
       $scope.options = products;
       $scope.step = { product: person.product };
-      $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.city', person, $scope, 'product');
+      $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.payment', person, $scope, 'product');
+
+      $scope.doNothing = function() {
+        $state.go('people.person.payment');
+      };
 
       $scope.selectOption = function(index) {
         $scope.step.product = options[index];

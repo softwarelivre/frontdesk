@@ -21,6 +21,10 @@
         return people.one(xid).patch(data);
       };
 
+      self.setProduct = function(xid, data) {
+        return people.one(xid).post('product', data);
+      };
+
       return self;
     })
     .factory('lazyCommit', function(FormErrors) {

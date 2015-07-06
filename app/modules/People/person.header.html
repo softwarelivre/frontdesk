@@ -6,7 +6,7 @@
 <h1>{{ person.name }}</h1>
 <h2>{{ person.id }}</h2>
 <h3>
-  {{ person.category }} -
+  {{ person.category | humanize }} -
   <span ng-show="person.has_valid_ticket">entrada autorizada</span>
   <span ng-hide="person.has_valid_ticket">entrada pendente</span>
 </h3>

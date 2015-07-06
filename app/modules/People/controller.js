@@ -38,7 +38,11 @@
     .module('segue.frontdesk.people.controller', [])
     .controller('PersonController', function($scope, $state, People, focusOn) {
       console.log('person ctrl');
-//      $state.go('people.person.country');
+
+      function decideState() {
+        if (!$scope.person) { return; }
+        return 'people.person.name';
+      }
 
       $scope.fastForward = function(nextState) {
         $state.go(nextState);
@@ -48,12 +52,7 @@
         People.getOne($state.params.xid).then(function(person) {
           $scope.person = person;
           if (nextState) { $state.go(nextState); }
-//          if (nextState === 'person') {
-//            $state.go('person');
-//          }
-//          else if ($state.is('person')) {
-//            $state.go(decideState());
-//          }
+          else if ($state.is('people.person')) { $state.go(decideState()); }
 //          else if (nextState) {
 //            $state.go(nextState);
 //          }
