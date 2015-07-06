@@ -21,7 +21,7 @@
     </tr>
     <tr ng-click="fastForward('people.person.document')">
       <th ng-class="{ done:   person.document }">cpf</th>
-      <td ng-class="{ empty: !person.document }">{{ person.document || 'não informado'}}</td>
+      <td ng-class="{ empty: !person.document }">{{ (person.document | document )|| 'não informado'}}</td>
     </tr>
   </tbody>
   <tbody>
@@ -47,12 +47,20 @@
       <th colspan="2">pagamentos recebidos</th>
     </tr>
     <tr ng-repeat="payment in person.payments">
-      <th>{{ payment.type }}</th>
+      <th>{{ payment.type | humanize }}</th>
       <td>
+        <small ng-show="person.category == 'business'">{{ person.badge_corp }}<br/></small>
+        <small ng-show="payment.type == 'government'">{{ payment.government.payer_name }}<br/></small>
         <small ng-show="payment.type == 'cash'">[{{ payment.cash.cashier }}]</small>
         <small ng-show="payment.type == 'pagseguro'">[{{ payment.pagseguro.code.substring(0,6) }}]</small>
         <small ng-show="payment.type == 'boleto'">
-          <a href="{{CONFIG.API_HOST}}/api/documents/boleto-{{ payment.boleto.document_hash}}.pdf" target="_blank">[{{ payment.boleto.our_number }}]</a>
+          <span ng-hide="payment.boleto.document_hash">
+            [{{ payment.boleto.our_number }}]
+          </span>
+          <a ng-show="payment.boleto.document_hash" target="_blank"
+             href="{{CONFIG.API_HOST}}/api/documents/boleto-{{ payment.boleto.document_hash}}.pdf">
+            [{{ payment.boleto.our_number }}]
+          </a>
         </small>
 
         <span ng-show="payment.type == 'promocode'">

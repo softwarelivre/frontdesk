@@ -2,4 +2,4 @@
 
 - hosts: production
   roles:
-    - admin
+    - frontdesk
