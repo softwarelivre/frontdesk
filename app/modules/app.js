@@ -23,7 +23,9 @@
       'segue.frontdesk.authenticate',
       'segue.frontdesk.people',
     ])
-    .controller('FrontDeskController', function($scope, $state, Auth, Config) {
+    .controller('FrontDeskController', function($scope, $state, DeviceType, Auth, Config) {
+      $scope.deviceClass = (DeviceType.isMobile())? 'mobile':'desktop';
+
       $scope.$on('$stateChangeSuccess', function(event, newState) {
         $scope.topState = newState.name.split('.')[0];
         $scope.subState = $scope.topState + "-" + newState.name.split('.')[1];

@@ -24,5 +24,13 @@
           return deferred.promise;
         }
       };
+    })
+    .service('DeviceType', function() {
+      var _isMobile = !!navigator.userAgent.match(/Android/i);
+      return {
+        isMobile:  function() { return _isMobile; },
+        isDesktop: function() { return !_isMobile; }
+      };
     });
+
 })();

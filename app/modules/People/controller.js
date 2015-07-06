@@ -4,6 +4,7 @@
   angular
     .module('segue.frontdesk.people', [
       'ui.keypress',
+      'segue.frontdesk.libs',
       'segue.frontdesk.authenticate.service',
       'segue.frontdesk.people.controller',
       'segue.frontdesk.people.steps',
@@ -36,8 +37,11 @@
 
   angular
     .module('segue.frontdesk.people.controller', [])
-    .controller('PersonController', function($scope, $state, People, focusOn) {
-      console.log('person ctrl');
+    .controller('PersonController', function($scope, $state, People, DeviceType, focusOn) {
+      if (DeviceType.isMobile()) {
+        console.log("cannot access this page from tablet");
+        $state.go('people.search');
+      }
 
       function decideState() {
         if (!$scope.person) { return; }

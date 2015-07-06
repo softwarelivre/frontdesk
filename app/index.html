@@ -17,7 +17,7 @@
     <!-- endinject -->
     <script src='config.js'></script>
   </head>
-  <body ng-controller="FrontDeskController" class="{{ topState }}">
+  <body ng-controller="FrontDeskController" class="{{ topState }} {{ deviceClass }}">
     <header class="bar noprint {{ topState }}">
         <img class="logo" ng-click="home()" src="/images/logo-fisl-small.png"/>
         <h1>
