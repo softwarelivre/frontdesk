@@ -54,7 +54,7 @@
       }
       focusOn('step.email');
     })
-    .controller('PersonController', function($scope, $state, People, DeviceType, focusOn) {
+    .controller('PersonController', function($scope, $state, FormErrors, People, DeviceType, focusOn) {
       if (DeviceType.isMobile()) {
         console.log("cannot access this page from tablet");
         $state.go('people.search');
@@ -80,6 +80,8 @@
 //          }
         });
       };
+
+      $scope.clearErrors = FormErrors.clear;
 
       $scope.autoFocusOption = function(options, currentValue, customComparatorFn) {
         $scope.enteredOption = null;

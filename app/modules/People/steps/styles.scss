@@ -9,6 +9,13 @@ main.people-person {
 
     border: 1px solid green;
 
+    [form-error] {
+      background: lightpink;
+      display: inline-block;
+      padding: 1rem;
+      margin: 5px;
+    }
+
     form {
       padding-top: 2rem;
 
