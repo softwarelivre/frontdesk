@@ -89,6 +89,10 @@ main.people-person {
     tr {
       height: 1.6rem;
 
+      &.locked th {
+        background: url(/images/lock.png) center right no-repeat;
+      }
+
       &:hover {
         background: #cccccc;
       }

@@ -73,20 +73,21 @@
     </tr>
   </tbody>
 
-  <tbody ng-show="hasValidTickets">
+  <tbody ng-show="person.has_valid_ticket">
     <tr ng-click="fastForward('people.person.badge_name')">
       <th colspan="2">etiqueta/material</th>
     </tr>
     <tr ng-click="fastForward('people.person.badge_name')">
-      <th ng-class="{ done:   person.badgeName }">nome</th>
-      <td ng-class="{ empty: !person.badgeName }">{{ person.badgeName }}</td>
+      <th ng-class="{ done:   person.badge_name }">nome</th>
+      <td ng-class="{ empty: !person.badge_name }">{{ person.badge_name }}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.badge_corp')">
-      <th ng-class="{ done:   person.badgeCorp }">empresa</th>
-      <td ng-class="{ empty: !person.badgeCorp }">{{ person.badgeCorp }}</td>
+    <tr ng-click="fastForward('people.person.badge_corp')"
+        ng-class="{ locked: !person.can_change_corp }">
+      <th ng-class="{ done:   person.badge_corp }">empresa</th>
+      <td ng-class="{ empty: !person.badge_corp }">{{ person.badge_corp }}</td>
     </tr>
     <tr ng-click="fastForward('person.print_badge')">
-      <th ng-class="{ done:   !person.badgePrinted.result.error }">impresso?</th>
+      <th ng-class="{ done:  !person.last_badge.was_ok }">impresso?</th>
       <td ng-hide="person.badgePrinted.result.error">impressora {{ person.badgePrinted.location }}</td>
       <td ng-show="person.badgePrinted.result.error">
         erro! clique para tentar de novo

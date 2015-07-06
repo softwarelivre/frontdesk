@@ -22,13 +22,26 @@ main.people-person {
       h3 {
         font-size: 200%;
       }
+      h5 {
+        background: lightpink;
+        border: 1px solid maroon;
+        margin: 2rem 7rem;
+        padding: 1rem;
+        font-weight: normal;
+      }
 
       text-align: center;
+    }
+    .fill {
       input {
-        font-size: 300%;
-        width: 80%;
+        font-size: x-large;
+        width: 40rem;
+        position: relative;
+        margin-bottom: .7rem;
+        padding: 0.3rem;
       }
     }
+
     .choose {
       padding: 0;
       h1 {
@@ -40,15 +53,13 @@ main.people-person {
         padding: 0;
       }
       button {
-        background: lightblue;
       }
       button, input[type=text] {
-        font-size: xx-large;
+        font-size: x-large;
         width: 25rem;
         position: relative;
         margin-bottom: .7rem;
         padding: 0.3rem;
-        border: 0;
 
         span {
           float: right;

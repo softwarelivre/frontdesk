@@ -51,12 +51,21 @@
           resolve: resolves({
             products: function(person) { return person.follow('eligible'); }
           })
+        })
+        .state('people.person.badge_name', {
+          url: '/badge-name',
+          views: viewsFor('BadgeName', 'badge_name'),
+          resolve: resolves({})
+        })
+        .state('people.person.badge_corp', {
+          url: '/badge-corp',
+          views: viewsFor('BadgeCorp', 'badge_corp'),
+          resolve: resolves({})
         });
     });
 
   angular
     .module('segue.frontdesk.people.steps.controller', [])
-
     .controller('PersonNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
       $scope.step = { name: person.name };
       $scope.keypress = {
@@ -123,6 +132,26 @@
       };
 
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
+    })
+    .controller('PersonBadgeNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      $scope.step = { badge_name: person.badge_name };
+      $scope.keypress = {
+        enter: lazyCommit(People.patch, person.id, 'people.person.badge_corp', person, $scope, 'badge_name')
+      };
+      focusOn('step.badge_name');
+    })
+    .controller('PersonBadgeCorpController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      $scope.step = { badge_corp: person.badge_corp };
+      $scope.keypress = {
+        enter: lazyCommit(People.patch, person.id, 'people.person.print', person, $scope, 'badge_corp')
+      };
+      if (person.can_change_badge_corp) {
+        focusOn('step.badge_corp');
+      } else {
+        focusOn('option-0');
+      }
+
     });
+
 
 })();
