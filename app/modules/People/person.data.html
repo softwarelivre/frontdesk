@@ -11,6 +11,13 @@
       <th ng-class="{ done:   person.name }"    >nome</th>
       <td ng-class="{ empty: !person.name }"    >{{ person.name     || 'não informado' }}</td>
     </tr>
+    <tr ng-click="fastForward('people.person.document')">
+      <th ng-class="{ done:   person.document }">
+        <span ng-show="person.is_brazilian">cpf</span>
+        <span ng-hide="person.is_brazilian">passaporte</span>
+      </th>
+      <td ng-class="{ empty: !person.document }">{{ (person.document )|| 'não informado'}}</td>
+    </tr>
     <tr ng-click="fastForward('people.person.country')">
       <th ng-class="{ done:   person.country }" >país</th>
       <td ng-class="{ empty: !person.country }" >{{ person.country  || 'não informado' }}</td>
@@ -18,10 +25,6 @@
     <tr ng-click="fastForward('people.person.city')" ng-hide="isForeign">
       <th ng-class="{ done:   person.city }"    >cidade</th>
       <td ng-class="{ empty: !person.city }"    >{{ person.city || 'não informado' }}</td>
-    </tr>
-    <tr ng-click="fastForward('people.person.document')">
-      <th ng-class="{ done:   person.document }">cpf</th>
-      <td ng-class="{ empty: !person.document }">{{ (person.document | document )|| 'não informado'}}</td>
     </tr>
   </tbody>
   <tbody>
@@ -47,7 +50,7 @@
       <th colspan="2">pagamentos recebidos</th>
     </tr>
     <tr ng-repeat="payment in person.payments">
-      <th>{{ payment.type | humanize }}</th>
+      <th class="done">{{ payment.type | humanize }}</th>
       <td>
         <small ng-show="person.category == 'business'">{{ person.badge_corp }}<br/></small>
         <small ng-show="payment.type == 'government'">{{ payment.government.payer_name }}<br/></small>
@@ -87,20 +90,16 @@
       <td ng-class="{ empty: !person.badge_corp }">{{ person.badge_corp }}</td>
     </tr>
     <tr ng-click="fastForward('person.print_badge')">
-      <th ng-class="{ done:  !person.last_badge.was_ok }">impresso?</th>
-      <td ng-hide="person.badgePrinted.result.error">impressora {{ person.badgePrinted.location }}</td>
-      <td ng-show="person.badgePrinted.result.error">
-        erro! clique para tentar de novo
-      </td>
+      <th ng-class="{ done:  person.last_badge.was_ok }">impresso?</th>
+      <td ng-show="person.last_badge.was_ok">{{ person.last_badge.printer }}</td>
+      <td ng-hide="person.last_badge.was_ok">erro! clique para tentar de novo</td>
     </tr>
 
     <tr ng-click="fastForward('person.give_badge')">
-      <th ng-class="{ done: person.badgeGiven }">entregue?</th>
-      <td ng-show="person.badgeGiven">
-        às {{ person.badgeGiven }}
-      </td>
-      <td ng-hide="person.badgeGiven">
-        nenhuma entrega registrada
+      <th ng-class="{ done: person.last_badge.given }">entregue?</th>
+      <td>
+          {{ person.last_badge.given | datetime_locale }}
+          <span ng-hide="person.last_badge.given">nenhuma entrega registrada</span>
       </td>
     </tr>
   </tbody>

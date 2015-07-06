@@ -9,9 +9,9 @@
       e já tem o nome da empresa preenchido como solicitado pelo responsável pela inscrição
     </h5>
 
-    <input type="text" value="{{ step.badge_corp }}"/>
+    <input type="text" value="{{ step.badge_corp }}" disabled/>
 
-    <button type="button" ng-click="doNothing()" disabled focusable="option-0">ok</button>
+    <button type="button" ng-click="fastForward('people.person.print')" focusable="option-0">ok, imprimir</button>
   </div>
 
   <div ng-show="person.can_change_badge_corp">

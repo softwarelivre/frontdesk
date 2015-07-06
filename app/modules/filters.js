@@ -21,6 +21,7 @@
     })
     .filter('date_locale',function() {
       return function(input) {
+        if (!input) { return ''; }
         var timestamp = Date.parse(input);
         if (isNaN(timestamp)) { return ''; }
         return (new Date(timestamp)).toLocaleDateString();
@@ -34,6 +35,7 @@
     })
     .filter('datetime_locale', function(Config) {
       return function(input, timezone) {
+        if (!input) { return ''; }
         if (!timezone) { timezone = Config.TIMEZONE; }
         var timestamp = Date.parse(input+timezone);
         if (isNaN(timestamp)) { return ''; }

@@ -3,6 +3,7 @@
 
   angular
     .module('segue.frontdesk.people.steps', [
+      'segue.frontdesk.flash',
       'segue.frontdesk.people.steps.controller',
       'segue.frontdesk.people.controller',
       'segue.frontdesk.people.service',
@@ -25,6 +26,11 @@
       }
 
       $stateProvider
+        .state('people.person.email', {
+          url: '/email',
+          views: viewsFor('Email'),
+          resolve: resolves({})
+        })
         .state('people.person.name', {
           url: '/name',
           views: viewsFor('Name'),
@@ -61,11 +67,33 @@
           url: '/badge-corp',
           views: viewsFor('BadgeCorp', 'badge_corp'),
           resolve: resolves({})
+        })
+        .state('people.person.print', {
+          url: '/print-badge',
+          views: viewsFor('Print'),
+          resolve: resolves({})
+        })
+        .state('people.person.give_badge', {
+          url: '/give-badge',
+          views: viewsFor('GiveBadge', 'give_badge'),
+          resolve: resolves({})
+        })
+        .state('people.person.done', {
+          url: '/done',
+          views: viewsFor('Done'),
+          resolve: {}
         });
     });
 
   angular
     .module('segue.frontdesk.people.steps.controller', [])
+    .controller('PersonEmailController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      $scope.step = { email: person.email };
+      $scope.keypress = {
+        enter: lazyCommit(People.patch, person.id, 'people.person.name', person, $scope, 'email')
+      };
+      focusOn('step.email');
+    })
     .controller('PersonNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
       $scope.step = { name: person.name };
       $scope.keypress = {
@@ -114,8 +142,9 @@
       $scope.step = { product: person.product };
       $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.payment', person, $scope, 'product');
 
-      $scope.doNothing = function() {
-        $state.go('people.person.payment');
+      $scope.ok = function() {
+        $scope.restart();
+//        $state.go('people.person', { reload: true });
       };
 
       $scope.selectOption = function(index) {
@@ -150,8 +179,52 @@
       } else {
         focusOn('option-0');
       }
+    })
+    .controller('PersonPrintController', function($scope, $state, People, Flash, focusOn, person, lazyCommit) {
+      $scope.demand(person.has_valid_ticket, true);
 
+      function nextPage() {
+        $state.go('people.person.give_badge', $state.params);
+      }
+
+      $scope.print = function() {
+        People.printBadge(person.id)
+              .then(nextPage)
+              .catch(Flash.set)
+              .then(nextPage);
+      };
+
+      $scope.print();
+    })
+    .controller('PersonGiveBadgeController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
+      if (!person.last_badge)       { $state.go('people.person'); }
+      if (!person.has_valid_ticket) { $state.go('people.person'); }
+
+      $scope.given = function() {
+        People.giveBadge(person.last_badge.id)
+              .then(_.partial($scope.fastForward, 'people.person.done'))
+              .catch(FormErrors.set);
+      };
+
+      $scope.reprint = function() {
+        $scope.fastForward('people.person.print');
+      };
+      $scope.editBadge = function() {
+        $scope.fastForward('people.person.badge_name');
+      };
+
+      $scope.keypress = function($index) {
+        return {
+          up:    _.partial($scope.focusOption, 3, $index-1),
+          down:  _.partial($scope.focusOption, 3, $index+1),
+        };
+      };
+      focusOn("option-0");
+    })
+    .controller('PersonDoneController', function($scope, $state, $timeout) {
+      $timeout(function() {
+        $state.go('people.search');
+      },3000);
     });
-
 
 })();

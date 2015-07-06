@@ -54,7 +54,9 @@
       }
       focusOn('step.email');
     })
-    .controller('PersonController', function($scope, $state, FormErrors, People, DeviceType, focusOn) {
+
+
+    .controller('PersonController', function($scope, $state, $q, FormErrors, People, DeviceType, focusOn) {
       if (DeviceType.isMobile()) {
         console.log("cannot access this page from tablet");
         $state.go('people.search');
@@ -62,23 +64,65 @@
 
       function decideState() {
         if (!$scope.person) { return; }
-        return 'people.person.name';
+
+        var needsName     = !$scope.person.name;
+        var needsDocument = !$scope.person.document;
+        var needsEmail    = !$scope.person.email;
+        var needsCountry  = !$scope.person.country;
+
+        var needsData   = _([ needsName, needsDocument, needsEmail, needsCountry ]).any();
+        var needsPrint  = _($scope.person.last_badge).isEmpty();
+        var needsTicket = !$scope.person.has_valid_ticket;
+
+        if (needsData) {
+          return 'people.person.email';
+        }
+        else if (needsTicket) {
+          return 'people.person.product';
+        }
+        else if (needsPrint) {
+          return 'people.person.badge_name';
+        }
+        else {
+          return 'people.person.give_badge';
+        }
       }
+
+      $scope.demand = function(testObject, raise) {
+        $scope.validState = false;
+        var testPasses = (testObject === true) || (!_.isEmpty(testObject));
+        if (testPasses) {
+          $scope.validState = true;
+        }
+        else if (raise) {
+          $scope.reload();
+          throw 'invalid state';
+        }
+        else {
+          $scope.reload();
+        }
+      };
 
       $scope.fastForward = function(nextState) {
         $state.go(nextState);
       };
 
-      $scope.reload = function(nextState) {
+      $scope.reload = function(nextState, pipedPerson) {
         if ($state.is('people.person.create')) { return; }
-        People.getOne($state.params.xid).then(function(person) {
+
+        var loadPerson = $q.when(pipedPerson);
+        if (!pipedPerson) { loadPerson = People.getOne($state.params.xid); }
+
+        loadPerson.then(function(person) {
           $scope.person = person;
-          if (nextState) { $state.go(nextState); }
+          if (nextState === 'people.person')   { $state.go('people.person'); }
           else if ($state.is('people.person')) { $state.go(decideState()); }
-//          else if (nextState) {
-//            $state.go(nextState);
-//          }
+          else if (nextState)                  { $state.go(nextState); }
         });
+      };
+
+      $scope.restart = function() {
+        $state.go('people.person', $state.params, { reload: true });
       };
 
       $scope.clearErrors = FormErrors.clear;
@@ -107,6 +151,8 @@
 
       $scope.reload();
     })
+
+
     .controller('PersonSearchController', function($scope, $state, $anchorScroll, focusOn, people) {
       $scope.enforceAuth();
       $scope.query = { needle: $state.params.query };

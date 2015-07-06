@@ -8,6 +8,7 @@
       API_PATH: '/api',
       DEFAULT_COUNTRIES: ['Brasil','Argentina','Uruguai'],
       TIMEZONE: '-0300',
+      DEFAULT_PRINTER: 'vagrant'
     });
 
 })();

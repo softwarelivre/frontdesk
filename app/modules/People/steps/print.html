@@ -1,0 +1,12 @@
+<form class="info" ng-hide="step">
+  <h1>
+    crachá sendo impresso, aguarde...
+  </h1>
+
+</form>
+
+<h5 ng-show="error">
+  <b>erro:</b> {{ error }}
+  <br/>
+  <button ng-click="reload()">tentar de novo</button>
+</h5>

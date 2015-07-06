@@ -4,11 +4,12 @@
     <h4>não é possível mudar a categoria deste participante</h4>
     <h5>
       <b>motivo:</b>
+      <span ng-show="person.status == 'stale'">ingresso vencido</span>
       <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
       <span ng-show="person.category == 'promocode'">aplicação de código promocional em andamento</span>
     </h5>
 
-    <button type="button" ng-click="doNothing()" focusable="option-0">ok</button>
+    <button type="button" ng-click="ok()" focusable="option-0">ok</button>
   </div>
 
   <div ng-show="options.length">

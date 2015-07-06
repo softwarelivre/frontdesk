@@ -11,6 +11,7 @@ main.people-person {
 
     &.status-pending { background: $pending-bg; }
     &.status-paid    { background: $paid-bg; }
+    &.status-stale   { background: $stale-bg; }
 
     &.loading {
       * {

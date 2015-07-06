@@ -1,0 +1,27 @@
+<form class="choose">
+  <h3>
+    Entregue o crachá para o participante
+  </h3>
+
+  <h5 ng-show="person.last_badge.given">
+    <b>Atenção!</b><br/>
+    este crachá já consta como entregue no sistema!<br/>
+    {{ person.last_badge.given | datetime_locale }}
+  </h5>
+
+  <h5 ng-show="flash">
+    <b>erro na impressão:</b> {{ flash }}
+  </h5>
+
+  <button type="button" ng-click="given()" ui-keydown="keypress(0)" focusable="option-0">
+      okay, entregue!
+  </button>
+  <button type="button" ng-click="reprint()" ui-keydown="keypress(1)" focusable="option-1">
+      imprimir novamente
+  </button>
+  <button type="button" ng-click="editBadge()" ui-keydown="keypress(2)" focusable="option-2">
+      editar ediqueta
+  </button>
+
+</form>
+
