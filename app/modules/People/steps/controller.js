@@ -11,8 +11,8 @@
       'ui.keypress',
     ])
     .config(function($stateProvider) {
-      function viewsFor(stepName) {
-        var templateName = stepName.toLowerCase();
+      function viewsFor(stepName, customTemplateName) {
+        var templateName = customTemplateName || stepName.toLowerCase();
         return {
           "header": { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/person.header.html' },
           "data":   { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/person.data.html' },
@@ -56,6 +56,7 @@
 
   angular
     .module('segue.frontdesk.people.steps.controller', [])
+
     .controller('PersonNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
       $scope.step = { name: person.name };
       $scope.keypress = {

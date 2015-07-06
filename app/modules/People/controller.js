@@ -32,11 +32,28 @@
           views: {
             "content@": { controller: 'PersonController', templateUrl: 'modules/People/person.html' }
           },
+        })
+        .state('people.person.create', {
+          url: '/person/create',
+          views: {
+            "step": { controller: 'PersonCreateController', templateUrl: 'modules/People/steps/email.html' }
+          }
         });
     });
 
   angular
     .module('segue.frontdesk.people.controller', [])
+    .controller('PersonCreateController', function($scope, $state, People, FormErrors, focusOn) {
+      $scope.step = { email: '' };
+      $scope.keypress = { enter: commit };
+
+      function commit() {
+        People.createPerson($scope.step)
+              .then(function(person) { $state.go('people.person', { xid: person.id }); })
+              .catch(FormErrors.set);
+      }
+      focusOn('step.email');
+    })
     .controller('PersonController', function($scope, $state, People, DeviceType, focusOn) {
       if (DeviceType.isMobile()) {
         console.log("cannot access this page from tablet");
@@ -53,6 +70,7 @@
       };
 
       $scope.reload = function(nextState) {
+        if ($state.is('people.person.create')) { return; }
         People.getOne($state.params.xid).then(function(person) {
           $scope.person = person;
           if (nextState) { $state.go(nextState); }

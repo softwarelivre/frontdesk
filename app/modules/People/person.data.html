@@ -34,7 +34,7 @@
     </tr>
     <tr>
       <th ng-class="{ done:   person.has_valid_ticket }">situação</th>
-      <td ng-class="{ empty: !person.has_valid_ticket }">{{ person.status }}</td>
+      <td ng-class="{ empty: !person.has_valid_ticket }">{{ person.status | humanize }}</td>
     </tr>
     <tr ng-show="person.outstanding_amount">
       <th>pendente</th>

@@ -20,5 +20,11 @@
 
         // payment types
         'cash':      'dinheiro',
+
+        // purchase statuses
+        'pending':    'pendente',
+        'paid':       'pago',
+        'reimbursed': 'reembolsado',
+        'stale':      'vencido',
     });
 })();

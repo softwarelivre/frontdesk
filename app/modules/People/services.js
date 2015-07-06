@@ -7,6 +7,10 @@
       var self = {};
       var people = Restangular.service('fd/people');
 
+      self.createPerson = function(data) {
+        return people.post(data);
+      };
+
       self.lookup = function(query) {
         if (!query.needle) { return []; }
         return people.getList({ q: query.needle });

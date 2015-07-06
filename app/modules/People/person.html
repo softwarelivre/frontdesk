@@ -1,3 +1,3 @@
-<header class="status-{{person.status}}" ui-view="header"></header>
-<section class="data" ui-view="data"></section>
+<header ng-show="person" class="status-{{person.status}}" ui-view="header"></header>
+<section ng-show="person" class="data" ui-view="data"></section>
 <section class="step" ui-view="step"></section>
