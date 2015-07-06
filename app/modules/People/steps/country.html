@@ -13,7 +13,7 @@
           ui-keydown="keypress($index)"
           focusable="option-{{ $index }}">
     {{ option }}
-    <span ng-show="option == person.country">*</span>
+    <span ng-show="option.id == person.product.id">*</span>
   </button>
   <input type="text"
          ng-model="enteredOption"

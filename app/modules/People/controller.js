@@ -27,7 +27,7 @@
           }
         })
         .state('people.person', {
-          url: '/:xid',
+          url: '/one/:xid',
           views: {
             "content@": { controller: 'PersonController', templateUrl: 'modules/People/person.html' }
           },
@@ -37,7 +37,8 @@
   angular
     .module('segue.frontdesk.people.controller', [])
     .controller('PersonController', function($scope, $state, People, focusOn) {
-      $state.go('people.person.country');
+      console.log('person ctrl');
+//      $state.go('people.person.country');
 
       $scope.fastForward = function(nextState) {
         $state.go(nextState);
@@ -59,20 +60,23 @@
         });
       };
 
-      $scope.autoFocusOption = function(options, currentValue) {
+      $scope.autoFocusOption = function(options, currentValue, customComparatorFn) {
         $scope.enteredOption = null;
-        if (_.includes(options, currentValue)) {
-          $scope.focusOption(options, options.indexOf(currentValue));
+        var comparatorFn = customComparatorFn || function(entry) { return entry == currentValue; };
+        var matches = _.map(options, comparatorFn);
+
+        if (_.includes(matches, true)) {
+          $scope.focusOption(options.length, matches.indexOf(true));
         } else if (currentValue) {
           $scope.enteredOption = currentValue;
-          $scope.focusOption(options, options.length);
+          $scope.focusOption(options.length, options.length);
         } else {
-          $scope.focusOption(options, 0);
+          $scope.focusOption(options.length, 0);
         }
       };
 
-      $scope.focusOption = function(options, index) {
-        if (index > options.length) { return; }
+      $scope.focusOption = function(length, index) {
+        if (index > length) { return; }
         if (index < 0) { return; }
         $scope.currentIndex = index;
         focusOn('option-'+index);

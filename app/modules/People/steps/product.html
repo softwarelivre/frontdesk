@@ -1,0 +1,19 @@
+<form class="choose fill">
+  <h3>
+    Qual é a categoria do participante?
+  </h3>
+  <h4>
+    use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de categoria e
+    <kbd>enter</kbd> para selecionar
+  </h4>
+
+  <button type="button"
+          ng-repeat="option in options"
+          ng-click="selectOptions($index)"
+          ui-keydown="keypress($index)"
+          focusable="option-{{ $index }}">
+          {{ option.category }}:
+          {{ option.price | realbrasileiro }}
+    <span ng-show="option == person.category">*</span>
+  </button>
+</form>

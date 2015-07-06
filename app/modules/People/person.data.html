@@ -1,60 +1,79 @@
 <table class="data" ng-class="{ loading: !person }">
   <tbody>
-    <tr ng-click="fastForward('person.fill_email')">
+    <tr ng-click="fastForward('people.person')">
       <th colspan="2">dados básicos</th>
     </tr>
-    <tr ng-click="fastForward('person.fill_email')">
+    <tr ng-click="fastForward('people.person.email')">
       <th ng-class="{ done:   person.email }"   >email</th>
       <td ng-class="{ empty: !person.email }"   >{{ person.email    || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('person.fill_name')">
+    <tr ng-click="fastForward('people.person.name')">
       <th ng-class="{ done:   person.name }"    >nome</th>
       <td ng-class="{ empty: !person.name }"    >{{ person.name     || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('person.fill_country')">
+    <tr ng-click="fastForward('people.person.country')">
       <th ng-class="{ done:   person.country }" >país</th>
       <td ng-class="{ empty: !person.country }" >{{ person.country  || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('person.fill_city')" ng-hide="isForeign">
+    <tr ng-click="fastForward('people.person.city')" ng-hide="isForeign">
       <th ng-class="{ done:   person.city }"    >cidade</th>
       <td ng-class="{ empty: !person.city }"    >{{ person.city || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('person.fill_document')">
+    <tr ng-click="fastForward('people.person.document')">
       <th ng-class="{ done:   person.document }">cpf</th>
       <td ng-class="{ empty: !person.document }">{{ person.document || 'não informado'}}</td>
     </tr>
   </tbody>
   <tbody>
-    <tr ng-click="fastForward('person.payment_pending')">
+    <tr ng-click="fastForward('people.person.product')">
       <th colspan="2">ingresso</th>
     </tr>
     <tr>
-      <th ng-class="{ done:   hasValidTickets }">situação</th>
-      <td ng-class="{ empty: !hasValidTickets }">{{ ticket.status }}</td>
+      <th ng-class="{ done:   person.category }">categoria</th>
+      <td ng-class="{ empty: !person.category }">{{ person.category }}</td>
     </tr>
     <tr>
-      <th ng-class="{ done:   ticket.grants }">categoria</th>
-      <td ng-class="{ empty: !ticket.grants }">{{ ticket.grants }}</td>
+      <th ng-class="{ done:   person.has_valid_ticket }">situação</th>
+      <td ng-class="{ empty: !person.has_valid_ticket }">{{ person.status }}</td>
     </tr>
+    <tr ng-show="person.outstanding_amount">
+      <th>pendente</th>
+      <td>{{ person.outstanding_amount | realbrasileiro }}</td>
+    </tr>
+  </tbody>
+
+  <tbody ng-show="person.payments">
     <tr>
-      <th ng-class="{ done:   ticket.method }">forma</th>
-      <td ng-class="{ empty: !ticket.method }">{{ ticket.method }}</td>
+      <th colspan="2">pagamentos recebidos</th>
     </tr>
-    <tr ng-show="person.promotionalCode" >
-      <th ng-class="{ done:   person.promotionalCode }">código promocional</th>
-      <td ng-class="{ empty: !person.promotionalCode }">{{ person.promotionalCode.hash }} = {{ person.promotionalCode.offRate }}%</td>
+    <tr ng-repeat="payment in person.payments">
+      <th>{{ payment.type }}</th>
+      <td>
+        <small ng-show="payment.type == 'cash'">[{{ payment.cash.cashier }}]</small>
+        <small ng-show="payment.type == 'pagseguro'">[{{ payment.pagseguro.code.substring(0,6) }}]</small>
+        <small ng-show="payment.type == 'boleto'">
+          <a href="{{CONFIG.API_HOST}}/api/documents/boleto-{{ payment.boleto.document_hash}}.pdf" target="_blank">[{{ payment.boleto.our_number }}]</a>
+        </small>
+
+        <span ng-show="payment.type == 'promocode'">
+          {{ payment.promocode.hash_code }} ({{ payment.promocode.discount*100 }}%)
+        </span>
+        <span ng-hide="payment.type == 'promocode'">
+          {{ payment.amount | realbrasileiro }}
+        </span>
+      </td>
     </tr>
   </tbody>
 
   <tbody ng-show="hasValidTickets">
-    <tr ng-click="fastForward('person.fill_badge_name')">
+    <tr ng-click="fastForward('people.person.badge_name')">
       <th colspan="2">etiqueta/material</th>
     </tr>
-    <tr ng-click="fastForward('person.fill_badge_name')">
+    <tr ng-click="fastForward('people.person.badge_name')">
       <th ng-class="{ done:   person.badgeName }">nome</th>
       <td ng-class="{ empty: !person.badgeName }">{{ person.badgeName }}</td>
     </tr>
-    <tr ng-click="fastForward('person.fill_badge_corp')">
+    <tr ng-click="fastForward('people.person.badge_corp')">
       <th ng-class="{ done:   person.badgeCorp }">empresa</th>
       <td ng-class="{ empty: !person.badgeCorp }">{{ person.badgeCorp }}</td>
     </tr>

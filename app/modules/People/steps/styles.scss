@@ -5,6 +5,7 @@ main.people-person {
     position: absolute;
     width: $person-header-width * 0.9;
     top: 5rem;
+    min-height: 70vh;
 
     border: 1px solid green;
 

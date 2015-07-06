@@ -20,9 +20,8 @@
         };
       }
       function resolves(otherResolves) {
-        return {
-            person:   function(People, $stateParams) { return People.getOne($stateParams.xid); },
-        };
+        var defaults = { person: function(People, $stateParams) { return People.getOne($stateParams.xid); } };
+        return _.extend(defaults, otherResolves);
       }
 
       $stateProvider
@@ -45,6 +44,13 @@
           url: '/city',
           views: viewsFor('City'),
           resolve: resolves({})
+        })
+        .state('people.person.product', {
+          url: '/product',
+          views: viewsFor('Product'),
+          resolve: resolves({
+            products: function(person) { return person.follow('eligible'); }
+          })
         });
     });
 
@@ -77,8 +83,8 @@
 
       $scope.keypress = function($index) {
         return {
-          up:    _.partial($scope.focusOption, $scope.options, $index-1),
-          down:  _.partial($scope.focusOption, $scope.options, $index+1),
+          up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
+          down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
           enter: _.partial($scope.selectOption, $index)
         };
       };
@@ -89,9 +95,29 @@
     .controller('PersonCityController', function($scope, $state, People, focusOn, person, lazyCommit) {
       $scope.step = { city: person.city };
       $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.name', person, $scope, 'city')
+        enter: lazyCommit(People.patch, person.id, 'people.person.product', person, $scope, 'city')
       };
       focusOn('step.city');
+    })
+    .controller('PersonProductController', function($scope, $state, Config, People, focusOn, person, products, lazyCommit) {
+      $scope.options = products;
+      $scope.step = { product: person.product };
+      $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.city', person, $scope, 'product');
+
+      $scope.selectOption = function(index) {
+        $scope.step.product = options[index];
+        $scope.commitProduct();
+      };
+
+      $scope.keypress = function($index) {
+        return {
+          up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
+          down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
+          enter: _.partial($scope.selectOption, $index)
+        };
+      };
+
+      $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
     });
 
 })();
