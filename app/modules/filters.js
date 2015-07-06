@@ -30,6 +30,7 @@
     .filter('document', function() {
       return function(input) {
         if (!input) { return; }
+        if (input.length < 10) { return input; }
         return input.replace(/(\d\d\d)/g,"$1.").replace(/.(\d\d)$/,"-$1");
       };
     })

@@ -1,0 +1,36 @@
+aside.printers {
+  position: fixed;
+  background: lightgray;
+
+  left: -60px;
+  top: 10rem;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    background: url(/images/printer.png) center right no-repeat;
+    background-size: 48px 48px;
+
+    li {
+      cursor: pointer;
+      line-height: 2rem;
+      padding: 5px 52px 5px 12px;
+      &:hover {
+        color: blue;
+      }
+    }
+  }
+
+  &:hover {
+    left: 0px;
+    ul {
+      background: none;
+      li.selected {
+        background: url(/images/printer.png) center right no-repeat;
+        background-size: 32px 32px;
+      }
+    }
+  }
+}

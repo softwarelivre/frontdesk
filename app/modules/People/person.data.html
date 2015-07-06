@@ -85,7 +85,7 @@
       <td ng-class="{ empty: !person.badge_name }">{{ person.badge_name }}</td>
     </tr>
     <tr ng-click="fastForward('people.person.badge_corp')"
-        ng-class="{ locked: !person.can_change_corp }">
+        ng-class="{ locked: !person.can_change_badge_corp }">
       <th ng-class="{ done:   person.badge_corp }">empresa</th>
       <td ng-class="{ empty: !person.badge_corp }">{{ person.badge_corp }}</td>
     </tr>

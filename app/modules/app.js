@@ -22,9 +22,11 @@
       'segue.frontdesk.home',
       'segue.frontdesk.authenticate',
       'segue.frontdesk.people',
+      'segue.frontdesk.printers',
     ])
-    .controller('FrontDeskController', function($scope, $state, DeviceType, Auth, Config) {
+    .controller('FrontDeskController', function($scope, $state, DeviceType, Auth, Printers, Config) {
       $scope.deviceClass = (DeviceType.isMobile())? 'mobile':'desktop';
+      $scope.currentPrinter = Printers.getCurrent();
 
       $scope.$on('$stateChangeSuccess', function(event, newState) {
         $scope.topState = newState.name.split('.')[0];
@@ -62,7 +64,7 @@
         return data;
       });
       RestangularProvider.setOnElemRestangularized(function(thing, isCollection, model, Restangular) {
-        if (!isCollection) {
+        if ((!isCollection) && (_.isObject(thing))) {
           thing.follow = function(name) {
             if (!thing.links) return null;
             if (!thing.links[name]) return null;

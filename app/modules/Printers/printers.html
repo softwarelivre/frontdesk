@@ -1,0 +1,9 @@
+<div class="printer">
+  <ul>
+    <li ng-class="{ selected: printer == currentPrinter }"
+        ng-click="setCurrent(printer)"
+        ng-repeat="printer in allPrinters">
+      {{ printer }}
+    </li>
+  </ul>
+</div>

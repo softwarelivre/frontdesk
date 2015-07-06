@@ -3,7 +3,7 @@
 
   angular
     .module('segue.frontdesk.people.service', [
-      'segue.frontdesk.printer'
+      'segue.frontdesk.printers'
     ])
     .service('People', function(Restangular, Printers) {
       var self = {};
