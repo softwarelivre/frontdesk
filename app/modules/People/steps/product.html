@@ -20,7 +20,7 @@
     </h4>
 
     <button type="button"
-            ng-repeat="option in options" ng-click="selectOptions($index)"
+            ng-repeat="option in options" ng-click="selectOption($index)"
             ui-keydown="keypress($index)" focusable="option-{{ $index }}">
             {{ option.category | humanize }}: {{ option.price | realbrasileiro }}
       <span ng-show="option.id == person.product.id">*</span>

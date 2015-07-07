@@ -58,6 +58,11 @@
             products: function(person) { return person.follow('eligible'); }
           })
         })
+        .state('people.person.payment', {
+          url: '/payment',
+          views: viewsFor('Payment'),
+          resolve: resolves({})
+        })
         .state('people.person.badge_name', {
           url: '/badge-name',
           views: viewsFor('BadgeName', 'badge_name'),
@@ -144,11 +149,10 @@
 
       $scope.ok = function() {
         $scope.restart();
-//        $state.go('people.person', { reload: true });
       };
 
       $scope.selectOption = function(index) {
-        $scope.step.product = options[index];
+        $scope.step.product = products[index];
         $scope.commitProduct();
       };
 
@@ -161,6 +165,22 @@
       };
 
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
+    })
+    .controller('PersonPaymentController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      $scope.cannotBePaid = function() {
+        $state.go('people.search', { query: person.name });
+      };
+      $scope.receivedCash = function() {
+        People.receivedPayment();
+      };
+      $scope.keypress = function($index) {
+        return {
+          up:    _.partial($scope.focusOption, 3, $index-1),
+          down:  _.partial($scope.focusOption, 3, $index+1),
+        };
+      };
+
+      focusOn('option-0');
     })
     .controller('PersonBadgeNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
       $scope.step = { badge_name: person.badge_name };

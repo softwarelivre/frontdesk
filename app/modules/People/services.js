@@ -28,8 +28,8 @@
         return people.one(xid).patch(data);
       };
 
-      self.setProduct = function(xid, data) {
-        return people.one(xid).post('product', data);
+      self.setProduct = function(xid, step) {
+        return people.one(xid).post('product', { product_id: step.product.id });
       };
 
       self.printBadge = function(xid) {
