@@ -47,6 +47,7 @@
 
       Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
         if (response.status === 400) {
+          if (!response.data.errors) { return false; }
           var str_error_message = '<span>' + response.data.errors.message + '</span>';
           ngToast.create({
             content: $sce.trustAsHtml(str_error_message),

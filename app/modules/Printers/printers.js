@@ -6,14 +6,22 @@
     .directive("printers", function(Printers) {
       return {
         templateUrl: 'modules/Printers/printers.html',
-        controller: function($scope, Printers) {
+        controller: function($scope, Printers, Auth) {
           $scope.currentPrinter = Printers.glue($scope,'currentPrinter');
-
-          Printers.allPrinters().then(function(printers) {
-            $scope.allPrinters = printers;
-          });
-
           $scope.setCurrent = Printers.setCurrent;
+
+          function load() {
+            if (!Auth.credentials()) {
+              $scope.allPrinters = [];
+            } else {
+              Printers.allPrinters().then(function(printers) {
+                $scope.allPrinters = printers;
+              });
+            }
+          }
+          load();
+
+          $scope.$on('auth:changed', load);
         }
       };
     })
