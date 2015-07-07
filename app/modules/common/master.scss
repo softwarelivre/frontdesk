@@ -40,17 +40,7 @@ body {
     width: auto;
   }
 
-  &>aside.login {
-    background: #999;
-    width: 20%;
-    position: fixed;
-    right: 5px;
-    top: 0px;
-    z-index: 150;
-    border-bottom-left-radius:  20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: inset -3px -3px 3px #666;
-  }
+
   &>aside.auth {
     border: 1px solid black;
     position: relative;
