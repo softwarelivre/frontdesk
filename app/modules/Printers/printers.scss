@@ -18,7 +18,8 @@ aside.printers {
       line-height: 2rem;
       padding: 5px 52px 5px 12px;
       &:hover {
-        color: blue;
+        background-color: gray;
+        color: black;
       }
     }
   }
@@ -28,7 +29,9 @@ aside.printers {
     ul {
       background: none;
       li.selected {
-        background: url(/images/printer.png) center right no-repeat;
+        background-image: url(/images/printer.png);
+        background-position: center right;
+        background-repeat: no-repeat;
         background-size: 32px 32px;
       }
     }

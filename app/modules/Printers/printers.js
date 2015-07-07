@@ -6,18 +6,14 @@
     .directive("printers", function(Printers) {
       return {
         templateUrl: 'modules/Printers/printers.html',
-        controller: function($scope, Printers, Auth) {
+        controller: function($scope, Printers) {
           $scope.currentPrinter = Printers.glue($scope,'currentPrinter');
           $scope.setCurrent = Printers.setCurrent;
 
           function load() {
-            if (!Auth.credentials()) {
-              $scope.allPrinters = [];
-            } else {
-              Printers.allPrinters().then(function(printers) {
-                $scope.allPrinters = printers;
-              });
-            }
+            Printers.allPrinters().then(function(printers) {
+              $scope.allPrinters = printers;
+            });
           }
           load();
 
@@ -25,11 +21,12 @@
         }
       };
     })
-    .service('Printers', function($localStorage, $rootScope, Restangular, Config) {
+    .service('Printers', function($localStorage, $rootScope, $q, Auth, Restangular, Config) {
       var printers = Restangular.service('fd/printers');
       var self = {};
 
       self.allPrinters = function() {
+        if (!Auth.credentials()) { return $q.when([]); }
         return printers.getList();
       };
 
