@@ -5,6 +5,9 @@ aside.printers {
   left: -110px;
   top: 10rem;
 
+  transition: left 0.2s;
+
+
   ul {
     list-style-type: none;
     margin: 0;
@@ -17,7 +20,7 @@ aside.printers {
       width: 100px;
       cursor: pointer;
       line-height: 2rem;
-      padding: 5px 52px 5px 12px;
+      padding: 3px 52px 3px 8px;
       &:hover {
         background-color: gray;
         color: black;

@@ -254,7 +254,7 @@
     .controller('PersonDoneController', function($scope, $state, $timeout) {
       $timeout(function() {
         $state.go('people.search');
-      },3000);
+      },1500);
     });
 
 })();

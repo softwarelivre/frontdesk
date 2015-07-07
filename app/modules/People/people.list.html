@@ -34,7 +34,7 @@
 
     <h2>
       <b>{{ person.category | humanize }}</b>
-      -
+      <br/>
       <span ng-show="person.has_valid_ticket">entrada autorizada</span>
       <span ng-hide="person.has_valid_ticket">entrada pendente</span>
     </h2>

@@ -77,8 +77,11 @@
         if (needsData) {
           return 'people.person.email';
         }
-        else if (needsTicket) {
+        else if (needsTicket && $scope.person.can_change_product) {
           return 'people.person.product';
+        }
+        else if (needsTicket) {
+          return 'people.person.payment';
         }
         else if (needsPrint) {
           return 'people.person.badge_name';

@@ -87,6 +87,11 @@ main.people-search {
       }
 
       h2 {
+        overflow: hidden;
+        white-space: nowrap;
+        position: absolute;
+        bottom: 0;
+        right: 0;
         font-size: large;
         float: right;
         margin: 0;
