@@ -1,4 +1,4 @@
-<header ng-show="!results.length && !loading">
+<header ng-show="!results.length && !loading" class="centered">
   <h1>
     ☹
   </h1>
@@ -13,7 +13,6 @@
 </header>
 
 <form ng-class="{ loading: loading }">
-  {{ focusedIndex }}
   <button ng-repeat="person in results"
           ui-sref="people.person({ xid: person.id })"
           focusable="result-{{$index}}"

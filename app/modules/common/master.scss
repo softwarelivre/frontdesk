@@ -40,6 +40,17 @@ body {
     width: auto;
   }
 
+  &>aside.go-home {
+    background: #999;
+    position: fixed;
+    left: 0;
+    top: 3rem;
+    z-index: 150;
+    img {
+      width: 64px;
+    }
+  }
+
 
   &>aside.auth {
     border: 1px solid black;
@@ -91,4 +102,7 @@ body {
 
 .pre-wrap {
   white-space: pre-wrap;
+}
+.centered {
+  text-align: center;
 }
