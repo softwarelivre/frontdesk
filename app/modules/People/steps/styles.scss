@@ -4,7 +4,7 @@ main.people-person {
   section.step {
     position: absolute;
     width: $person-header-width * 0.9;
-    top: 5rem;
+    top: 6rem;
     min-height: 70vh;
 
     border: 1px solid green;
@@ -56,10 +56,10 @@ main.people-person {
       }
       button, input[type=text] {
         font-size: x-large;
-        width: 25rem;
+        width: 80%;
         position: relative;
         margin-bottom: .7rem;
-        padding: 0.3rem;
+        padding: 1rem;
 
         span {
           float: right;

@@ -39,6 +39,10 @@
         return badges.one(badgeId).post('give');
       };
 
+      self.receivedPayment = function(xid, mode) {
+        return people.one(xid).post('pay', { mode: mode });
+      };
+
       return self;
     })
     .factory('lazyCommit', function(FormErrors) {

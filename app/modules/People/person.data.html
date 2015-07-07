@@ -28,10 +28,10 @@
     </tr>
   </tbody>
   <tbody>
-    <tr ng-click="fastForward('people.person.product')">
+    <tr>
       <th colspan="2">ingresso</th>
     </tr>
-    <tr>
+    <tr ng-click="fastForward('people.person.product')">
       <th ng-class="{ done:   person.category }">categoria</th>
       <td ng-class="{ empty: !person.category }">{{ person.category | humanize }}</td>
     </tr>

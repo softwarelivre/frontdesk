@@ -3,8 +3,8 @@
 main.people-person {
   header {
     min-height: 100px;
-    position: absolute;
-    top: -2rem;
+    position: fixed;
+    top: 2.3rem;
     width: $person-header-width;
     float: left;
     border-bottom: 1px solid green;
@@ -81,11 +81,13 @@ main.people-person {
 main.people-person {
   table.data {
     position: absolute;
-    top: 5rem;
+    top: 6rem;
     right: -10em;
     width: 23rem;
     padding: 0 1rem;
     margin: -1.5rem 0 0 0;
+
+    [ng-click] { cursor: pointer }
 
     tr {
       height: 1.6rem;

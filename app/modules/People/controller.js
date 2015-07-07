@@ -49,7 +49,7 @@
 
       function commit() {
         People.createPerson($scope.step)
-              .then(function(person) { $state.go('people.person', { xid: person.id }); })
+              .then(function(person) { $state.go('people.person.name', { xid: person.id }); })
               .catch(FormErrors.set);
       }
       focusOn('step.email');
@@ -158,6 +158,8 @@
       $scope.query = { needle: $state.params.query };
       $scope.results = people;
       $scope.focusedIndex = -1;
+
+      $scope.empty = ($scope.query.needle.length > 0) && (people.length === 0);
 
       $scope.performSearch = function() {
         $state.go('people.search', { query: $scope.query.needle });

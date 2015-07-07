@@ -166,12 +166,22 @@
 
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
     })
-    .controller('PersonPaymentController', function($scope, $state, People, focusOn, person, lazyCommit) {
+    .controller('PersonPaymentController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
+      if (person.has_valid_ticket) {
+        $state.go('people.person');
+      }
       $scope.cannotBePaid = function() {
         $state.go('people.search', { query: person.name });
       };
       $scope.receivedCash = function() {
-        People.receivedPayment();
+        People.receivedPayment(person.id, 'cash')
+              .then(function() { $state.reload('people.person'); })
+              .catch(FormErrors.set);
+      };
+      $scope.receivedCard = function() {
+        People.receivedPayment(person.id, 'card')
+              .then(function() { $state.reload('people.person'); })
+              .catch(FormErrors.set);
       };
       $scope.keypress = function($index) {
         return {
