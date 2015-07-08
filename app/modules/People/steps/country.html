@@ -9,7 +9,7 @@
 
   <button type="button"
           ng-repeat="option in options"
-          ng-click="selectOption($index)"
+          ng-click="selectOption($index, $event)"
           ui-keydown="keypress($index)"
           focusable="option-{{ $index }}">
     {{ option }}

@@ -123,6 +123,7 @@
 
       $scope.selectOption = function(index) {
         var options = $scope.options.concat($scope.enteredOption);
+
         $scope.step.country = options[index];
         $scope.commitCountry();
       };
@@ -131,6 +132,7 @@
         return {
           up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
           down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
+          enter: function() { if ($index == $scope.options.length) { $scope.selectOption($index); } }
         };
       };
 
