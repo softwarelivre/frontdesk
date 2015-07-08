@@ -3,6 +3,10 @@
     Entregue o crachá para o participante
   </h3>
 
+  <h4 ng-hide="person.gives_kit">
+    atenção! este participante não recebe material do evento
+  </h4>
+
   <h5 ng-show="person.last_badge.given">
     <b>Atenção!</b><br/>
     este crachá já consta como entregue no sistema!<br/>
