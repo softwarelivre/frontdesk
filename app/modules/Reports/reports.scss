@@ -1,0 +1,50 @@
+main.reports {
+  footer {
+    page-break-inside: never;
+  }
+  dl {
+    font-size: small;
+    clear: both;
+    padding-bottom: 5px;
+
+    dt {
+      float: left;
+      display: inline-block;
+      font-weight: bold;
+      margin: 0;
+      padding: 0;
+    }
+    dd {
+      float: left;
+      display: inline-block;
+      margin: 0 1rem 0 0.2rem;
+      min-width: 3rem;
+      padding: 0;
+    }
+  }
+
+  header {
+    @media print {
+      position: relative;
+      margin: 0;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    border: 1px solid gray;
+
+    thead {
+      padding: 5px;
+      background: black;
+      color: white;
+    }
+    tbody {
+      td {
+        border-bottom: 1px dotted gray;
+        border-left: 1px solid gray;
+        padding: 15px 15px;
+      }
+    }
+  }
+}

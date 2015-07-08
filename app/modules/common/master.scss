@@ -1,3 +1,6 @@
+@media print {
+  body>header, body>aside { display: none; }
+}
 
 body {
   margin: 0;
@@ -45,9 +48,14 @@ body {
     left: 0;
     top: 3rem;
     z-index: 150;
-    img {
-      width: 64px;
-    }
+    img { width: 64px; }
+  }
+  &>aside.go-reports {
+    position: fixed;
+    left: 8px;
+    top: 8rem;
+    z-index: 150;
+    img { width: 48px; }
   }
 
 

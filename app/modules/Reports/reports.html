@@ -1,0 +1,47 @@
+<header>
+  <dl>
+    <dt>usuário</dt>
+    <dd>{{ cashier.name }}</dd>
+    <dt>data/hora de emissão</dt>
+    <dd>{{ issueTime | datetime_locale }}</dd>
+    <dt>período</dt>
+    <dd>dia 8 de Julho</dd>
+  </dl>
+</header>
+
+<table class="reports">
+  <thead>
+    <tr>
+      <th>data</th>
+      <th>horário</th>
+      <th>modo</th>
+      <th>valor</th>
+      <th>nº insc.</th>
+      <th>nome partic.</th>
+      <th>descrição</th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="payment in filtered">
+    <tr ng-repeat="transition in payment.transitions">
+      <td>{{ transition.created | date_locale }}</td>
+      <td>{{ transition.created | time_locale }}</td>
+      <td>{{ transition.mode | humanize }}</td>
+      <td>{{ payment.amount | realbrasileiro }}</td>
+      <td>{{ payment.person.id }}</td>
+      <td>{{ payment.person.name }}</td>
+      <td>{{ payment.person.description }} </td>
+    </tr>
+  </tbody>
+</table>
+
+<footer class="print">
+  <h3>
+    operações:
+    {{ filtered.length }}
+  </h3>
+
+  <h2>
+    valor total:
+    R$ {{ sumOfFiltered }}
+  </h2>
+</footer>
