@@ -188,7 +188,7 @@
       $scope.is_cashier = Auth.isCashier();
       if (person.has_valid_ticket) { $scope.restart(); }
 
-      $scope.cannotBePaid = function() {
+      $scope.didNotReceive = function() {
         $state.go('people.search', { query: person.name });
       };
       $scope.receivedCash = function() {
@@ -201,10 +201,13 @@
               .then(_.partial($state.reload, 'people.person'))
               .catch(FormErrors.set);
       };
+
+      $scope.goToPromocode = function() { $scope.reload('people.person.promocode'); };
+
       $scope.keypress = function($index) {
         return {
-          up:    _.partial($scope.focusOption, 3, $index-1),
-          down:  _.partial($scope.focusOption, 3, $index+1),
+          up:    _.partial($scope.focusOption, 4, $index-1),
+          down:  _.partial($scope.focusOption, 4, $index+1),
         };
       };
 
