@@ -2,15 +2,26 @@
   <div ng-show="!is_cashier || !options.length">
     <h3>Atenção!</h3>
     <h4>não é possível mudar a categoria deste participante</h4>
-    <h5>
-      <b>motivo:</b>
-      <span ng-show="person.status == 'stale'">ingresso vencido</span>
-      <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
-      <span ng-show="person.category == 'promocode'">aplicação de código promocional em andamento</span>
-      <span ng-show="!is_cashier">o operador logado não tem permissão para a operação</span>
-    </h5>
 
-    <button type="button" ng-click="ok()" focusable="option-0">ok</button>
+    <div ng-show="person.status == 'stale'">
+      <h5>ingresso vencido</h5>
+      <button type="button" ng-click="backToSearch()" focusable="option-0">ok</button>
+    </div>
+
+    <div ng-show="person.has_valid_ticket">
+      <h5>pagamento já foi efeutado</h5>
+      <button type="button" ng-click="restart()" focusable="option-0">ok</button>
+    </div>
+
+    <div ng-show="person.category == 'promocode'">
+      <h5>inscrição possui código promocional associado</h5>
+      <button type="button" ng-click="goToPayment()" focusable="option-0">ok</button>
+    </div>
+
+    <div ng-show="!is_cashier">
+      <h5>o operador logado não tem permissão para a operação</h5>
+      <button type="button" ng-click="backToSearch()" focusable="option-0">ok</button>
+    </div>
   </div>
 
   <div ng-show="is_cashier && options.length">

@@ -1,27 +1,17 @@
 <form class="choose payment">
-  <div ng-show="is_cashier">
+  <div ng-show="!is_cashier || !person.product.can_pay_cash">
     <h3>Atenção!</h3>
     <h4>não é possível pagar este ingresso</h4>
-    <h5>
-      <b>motivo:</b>
-      <span ng-show="person.status == 'stale'">ingresso vencido</span>
-      <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
-      <span ng-show="person.category == 'promocode'">aplicação de código promocional em andamento</span>
-    </h5>
 
-    <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
-  </div>
-  <div ng-hide="person.product.can_pay_cash || !is_cashier">
-    <h3>Atenção!</h3>
-    <h4>não é possível pagar este ingresso</h4>
-    <h5>
-      <b>motivo:</b>
-      <span ng-show="person.status == 'stale'">ingresso vencido</span>
-      <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
-      <span ng-show="person.category == 'promocode'">aplicação de código promocional em andamento</span>
-    </h5>
+    <div ng-show="person.status == 'stale'">
+      <h5>ingresso vencido</h5>
+      <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+    </div>
 
-    <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+    <div ng-show="!is_cashier">
+      <h5>o operador logado não tem permissão para a operação</h5>
+      <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+    </div>
   </div>
 
   <div ng-show="is_cashier && person.product.can_pay_cash">
