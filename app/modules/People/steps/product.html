@@ -9,11 +9,11 @@
     </div>
 
     <div ng-show="person.has_valid_ticket">
-      <h5>pagamento já foi efeutado</h5>
+      <h5>pagamento já foi efetuado</h5>
       <button type="button" ng-click="restart()" focusable="option-0">ok</button>
     </div>
 
-    <div ng-show="person.category == 'promocode'">
+    <div ng-show="person.category == 'promocode' && !person.has_valid_ticket">
       <h5>inscrição possui código promocional associado</h5>
       <button type="button" ng-click="goToPayment()" focusable="option-0">ok</button>
     </div>
@@ -36,6 +36,12 @@
             ui-keydown="keypress($index)" focusable="option-{{ $index }}">
             {{ option.category | humanize }}: {{ option.price | realbrasileiro }}
       <span ng-show="option.id == person.product.id">*</span>
+    </button>
+    <br/>
+    <br/>
+    <button type="button" ng-click="goToPromocode()"
+            ui-keydown="keypress(options.length)" focusable="option-{{ options.length }}">
+      usar código promocional
     </button>
   </div>
 

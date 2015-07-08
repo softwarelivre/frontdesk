@@ -36,6 +36,10 @@
       <td ng-class="{ empty: !person.category }">{{ person.category | humanize }}</td>
     </tr>
     <tr>
+      <th ng-class="{ done:   person.has_valid_ticket }">produto</th>
+      <td>{{ person.product.description }}</td>
+    </tr>
+    <tr>
       <th ng-class="{ done:   person.has_valid_ticket }">situação</th>
       <td ng-class="{ empty: !person.has_valid_ticket }">{{ person.status | humanize }}</td>
     </tr>
@@ -45,7 +49,7 @@
     </tr>
   </tbody>
 
-  <tbody ng-show="person.payments">
+  <tbody ng-show="person.payments.length">
     <tr>
       <th colspan="2">pagamentos recebidos</th>
     </tr>
@@ -54,7 +58,7 @@
       <td>
         <small ng-show="person.category == 'business'">{{ person.badge_corp }}<br/></small>
         <small ng-show="payment.type == 'government'">{{ payment.government.payer_name }}<br/></small>
-        <small ng-show="payment.type == 'cash'">[{{ payment.cash.cashier }}]</small>
+        <small ng-show="payment.type == 'cash'">[{{ payment.cash.mode | humanize }} - {{ payment.cash.cashier }}]</small>
         <small ng-show="payment.type == 'pagseguro'">[{{ payment.pagseguro.code.substring(0,6) }}]</small>
         <small ng-show="payment.type == 'boleto'">
           <span ng-hide="payment.boleto.document_hash">

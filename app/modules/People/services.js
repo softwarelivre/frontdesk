@@ -43,6 +43,10 @@
         return people.one(xid).post('pay', { mode: mode });
       };
 
+      self.applyPromo = function(xid, data) {
+        return people.one(xid).post('promo', data);
+      };
+
       return self;
     })
     .factory('lazyCommit', function(FormErrors) {
@@ -55,7 +59,7 @@
           }
           else {
             console.log('commiting changes on', field);
-            commitFn(xid, scope.step).then(function(person) { scope.reload(nextState, person); })
+            commitFn(xid, scope.step).then(function(person) { scope.reload(nextState); })
                                      .catch(FormErrors.set);
           }
         };

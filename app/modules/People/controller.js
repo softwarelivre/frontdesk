@@ -110,13 +110,10 @@
         $state.go(nextState);
       };
 
-      $scope.reload = function(nextState, pipedPerson) {
+      $scope.reload = function(nextState) {
         if ($state.is('people.person.create')) { return; }
 
-        var loadPerson = $q.when(pipedPerson);
-        if (!pipedPerson) { loadPerson = People.getOne($state.params.xid); }
-
-        loadPerson.then(function(person) {
+        People.getOne($state.params.xid).then(function(person) {
           $scope.person = person;
           if (nextState === 'people.person')   { $state.go('people.person'); }
           else if ($state.is('people.person')) { $state.go(decideState()); }

@@ -54,9 +54,12 @@
         .state('people.person.product', {
           url: '/product',
           views: viewsFor('Product'),
-          resolve: resolves({
-            products: function(person) { return person.follow('eligible'); }
-          })
+          resolve: resolves({ products: function(person) { return person.follow('eligible'); } })
+        })
+        .state('people.person.promocode', {
+          url: '/promocode',
+          views: viewsFor('Promocode'),
+          resolve: resolves({})
         })
         .state('people.person.payment', {
           url: '/payment',
@@ -128,7 +131,6 @@
         return {
           up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
           down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
-          enter: _.partial($scope.selectOption, $index)
         };
       };
 
@@ -148,40 +150,55 @@
       $scope.step = { product: person.product };
       $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.payment', person, $scope, 'product');
 
-      $scope.backToSearch = function() { $scope.reload('people.person.done'); };
-      $scope.goToPayment  = function() { $scope.reload('people.perosn.payment'); };
+      $scope.backToSearch  = function() { $scope.reload('people.person.done'); };
+      $scope.goToPayment   = function() { $scope.reload('people.person.payment'); };
+      $scope.goToPromocode = function() { $scope.reload('people.person.promocode'); };
 
       $scope.selectOption = function(index) {
-        $scope.step.product = products[index];
-        $scope.commitProduct();
+        if (index == $scope.options.length) {
+          $scope.goToPromocode();
+        } else {
+          $scope.step.product = products[index];
+          $scope.commitProduct();
+        }
       };
 
       $scope.keypress = function($index) {
         return {
-          up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
-          down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
-          enter: _.partial($scope.selectOption, $index)
+          up:    _.partial($scope.focusOption, $scope.options.length+1, $index-1),
+          down:  _.partial($scope.focusOption, $scope.options.length+1, $index+1),
         };
       };
 
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
     })
+    .controller('PersonPromocodeController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
+      $scope.step = { hash_code: '' };
+      $scope.tryPromocode = function() {
+        People.applyPromo(person.id, $scope.step)
+              .then($scope.restart)
+              .catch(FormErrors.set);
+      };
+      $scope.giveUp = $scope.restart;
+      $scope.keypress = { enter: $scope.tryPromocode, esc: $scope.giveUp };
+
+      focusOn('step.hash_code');
+    })
     .controller('PersonPaymentController', function($scope, $state, Auth, People, FormErrors, focusOn, person, lazyCommit) {
       $scope.is_cashier = Auth.isCashier();
-      if (person.has_valid_ticket) {
-        $state.go('people.person');
-      }
+      if (person.has_valid_ticket) { $scope.restart(); }
+
       $scope.cannotBePaid = function() {
         $state.go('people.search', { query: person.name });
       };
       $scope.receivedCash = function() {
         People.receivedPayment(person.id, 'cash')
-              .then(function() { $state.reload('people.person'); })
+              .then(_.partial($state.reload, 'people.person'))
               .catch(FormErrors.set);
       };
       $scope.receivedCard = function() {
         People.receivedPayment(person.id, 'card')
-              .then(function() { $state.reload('people.person'); })
+              .then(_.partial($state.reload, 'people.person'))
               .catch(FormErrors.set);
       };
       $scope.keypress = function($index) {
@@ -194,6 +211,7 @@
       focusOn('option-0');
     })
     .controller('PersonBadgeNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      if (!person.has_valid_ticket) { $scope.restart(); return; }
       $scope.step = { badge_name: person.badge_name };
       $scope.keypress = {
         enter: lazyCommit(People.patch, person.id, 'people.person.badge_corp', person, $scope, 'badge_name')
@@ -201,6 +219,7 @@
       focusOn('step.badge_name');
     })
     .controller('PersonBadgeCorpController', function($scope, $state, People, focusOn, person, lazyCommit) {
+      if (!person.has_valid_ticket) { $scope.restart(); return; }
       $scope.step = { badge_corp: person.badge_corp };
       $scope.keypress = {
         enter: lazyCommit(People.patch, person.id, 'people.person.print', person, $scope, 'badge_corp')
@@ -212,7 +231,7 @@
       }
     })
     .controller('PersonPrintController', function($scope, $state, People, Flash, focusOn, person, lazyCommit) {
-      $scope.demand(person.has_valid_ticket, true);
+      if (!person.has_valid_ticket) { $scope.restart(); return; }
 
       function nextPage() {
         $state.go('people.person.give_badge', $state.params);
@@ -228,8 +247,8 @@
       $scope.print();
     })
     .controller('PersonGiveBadgeController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
-      if (!person.last_badge)       { $state.go('people.person'); }
-      if (!person.has_valid_ticket) { $state.go('people.person'); }
+      if (!person.last_badge)       { $scope.restart(); return; }
+      if (!person.has_valid_ticket) { $scope.restart(); return; }
 
       $scope.given = function() {
         People.giveBadge(person.last_badge.id)

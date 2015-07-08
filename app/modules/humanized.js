@@ -18,13 +18,16 @@
         'speaker':           'palestrante',
         'student':           'estudante',
 
-        // payment types
-        'cash':      'dinheiro',
+        // payment types && modes
+        'cash': 'dinheiro',
+        'card': 'cartão',
+
 
         // purchase statuses
         'pending':    'pendente',
         'paid':       'pago',
         'reimbursed': 'reembolsado',
         'stale':      'vencido',
+
     });
 })();

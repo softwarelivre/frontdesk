@@ -7,13 +7,19 @@ main.people-person {
     top: 6rem;
     min-height: 70vh;
 
-    border: 1px solid green;
+    border: 1px dotted gray;
 
     [form-error] {
       background: lightpink;
       display: inline-block;
       padding: 1rem;
       margin: 5px;
+    }
+
+    button.give_up {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
     form {
@@ -52,14 +58,12 @@ main.people-person {
       h2, h3 {
         padding: 0;
       }
-      button {
-      }
       button, input[type=text] {
         font-size: x-large;
         width: 80%;
         position: relative;
         margin-bottom: .7rem;
-        padding: 1rem;
+        padding: 0.5rem;
 
         span {
           float: right;
