@@ -15,8 +15,8 @@
       function viewsFor(stepName, customTemplateName) {
         var templateName = customTemplateName || stepName.toLowerCase();
         return {
-          "header": { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/person.header.html' },
-          "data":   { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/person.data.html' },
+          "header": { controller: 'PersonNameController', templateUrl: 'modules/People/person.header.html' },
+          "data":   { controller: 'PersonNameController', templateUrl: 'modules/People/person.data.html' },
           "step":   { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/steps/'+templateName+'.html' }
         };
       }
@@ -239,8 +239,10 @@
       function nextPage() {
         $state.go('people.person.give_badge', $state.params);
       }
+      console.log("in controller print");
 
       $scope.print = function() {
+        console.log("in print()");
         People.printBadge(person.id)
               .then(nextPage)
               .catch(Flash.set)
