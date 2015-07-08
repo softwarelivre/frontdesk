@@ -1,5 +1,17 @@
 <form class="choose payment">
-  <div ng-hide="person.product.can_pay_cash">
+  <div ng-show="is_cashier">
+    <h3>Atenção!</h3>
+    <h4>não é possível pagar este ingresso</h4>
+    <h5>
+      <b>motivo:</b>
+      <span ng-show="person.status == 'stale'">ingresso vencido</span>
+      <span ng-show="person.has_valid_ticket">pagamento já foi efetuado</span>
+      <span ng-show="person.category == 'promocode'">aplicação de código promocional em andamento</span>
+    </h5>
+
+    <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+  </div>
+  <div ng-hide="person.product.can_pay_cash || !is_cashier">
     <h3>Atenção!</h3>
     <h4>não é possível pagar este ingresso</h4>
     <h5>
@@ -12,7 +24,7 @@
     <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
   </div>
 
-  <div ng-show="person.product.can_pay_cash">
+  <div ng-show="is_cashier && person.product.can_pay_cash">
     <h2>
       cobre o valor abaixo
     </h2>

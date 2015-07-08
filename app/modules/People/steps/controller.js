@@ -142,7 +142,8 @@
       };
       focusOn('step.city');
     })
-    .controller('PersonProductController', function($scope, $state, Config, People, focusOn, person, products, lazyCommit) {
+    .controller('PersonProductController', function($scope, $state, Auth, Config, People, focusOn, person, products, lazyCommit) {
+      $scope.is_cashier = Auth.isCashier()
       $scope.options = products;
       $scope.step = { product: person.product };
       $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.payment', person, $scope, 'product');
@@ -167,6 +168,7 @@
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
     })
     .controller('PersonPaymentController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
+      $scope.is_cashier = Auth.isCashier()
       if (person.has_valid_ticket) {
         $state.go('people.person');
       }

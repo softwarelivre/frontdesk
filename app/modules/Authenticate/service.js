@@ -73,6 +73,11 @@
       self.credentials = function() {
         return LocalSession.current().credentials;
       };
+      self.isCashier = function() {
+        var credentials = self.credentials();
+        if (!credentials) { return false; }
+        return _.includes(['admin','cashier'],credentials.role);
+      };
       self.token = function() {
         return LocalSession.current().token;
       };
