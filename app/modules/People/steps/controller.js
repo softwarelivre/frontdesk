@@ -89,7 +89,7 @@
         .state('people.person.done', {
           url: '/done',
           views: viewsFor('Done'),
-          resolve: {}
+          resolve: resolves({})
         });
     });
 
