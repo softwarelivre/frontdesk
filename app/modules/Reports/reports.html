@@ -41,7 +41,10 @@
   </h3>
 
   <h2>
-    valor total:
-    R$ {{ sumOfFiltered }}
+    valor total: {{ totalSum | realbrasileiro }}
+    <br/>
+    dinheiro: {{ cashSum | realbrasileiro }}
+    <br/>
+    cartão: {{ cardSum | realbrasileiro }}
   </h2>
 </footer>

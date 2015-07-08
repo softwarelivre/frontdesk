@@ -41,12 +41,11 @@
 
       $scope.updateFilter = function() {
         $scope.filtered = _.filter(report, periodFilter);
-        window.yy = $scope.filtered;
-        window.xx = report;
-        $scope.sumOfFiltered = _.chain($scope.filtered)
-                                .pluck('amount')
-                                .map(parseFloat)
-                                .reduce(summer, 0);
+        var isCash = function(p) { return _.filter(p.transitions,'mode','cash').length; };
+        var isCard = function(p) { return _.filter(p.transitions,'mode','card').length; };
+        $scope.totalSum = _.chain($scope.filtered).pluck('amount').map(parseFloat).reduce(summer, 0);
+        $scope.cashSum  = _.chain($scope.filtered).filter(isCash).pluck('amount').map(parseFloat).reduce(summer, 0);
+        $scope.cardSum  = _.chain($scope.filtered).filter(isCard).pluck('amount').map(parseFloat).reduce(summer, 0);
       };
 
       $scope.updateFilter();
