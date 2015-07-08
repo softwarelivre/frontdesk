@@ -24,6 +24,7 @@
       'segue.frontdesk.people',
       'segue.frontdesk.printers',
       'segue.frontdesk.reports',
+      'segue.frontdesk.visitors',
     ])
     .controller('FrontDeskController', function($scope, $state, DeviceType, Auth, Printers, Config) {
       $scope.deviceClass = (DeviceType.isMobile())? 'mobile':'desktop';

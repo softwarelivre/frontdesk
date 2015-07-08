@@ -1,0 +1,17 @@
+<form>
+  <h1>
+    visitantes
+  </h1>
+
+  <input ng-model="visitor.name"     focusable="name"  placeholder="nome"
+         ui-keypress="{ 'enter': 'focusEmail()' }" />
+  <input ng-model="visitor.email"    focusable="email" placeholder="e-mail"
+         ui-keypress="{ 'enter': 'focusDoc()' }" />
+  <input ng-model="visitor.document" focusable="document"  placeholder="documento"
+         ui-keypress="{ 'enter': 'commit()' }" />
+
+
+  <h5 ng-show="error">
+    <b>erro:</b> {{ error }}</br>
+  </h5>
+</form>
