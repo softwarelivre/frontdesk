@@ -26,11 +26,14 @@
         var full = date + hour + Config.TIMEZONE;
         return full;
       }
+      function hoursAndMinutes(datetime) {
+        return datetime.getHours() + ":" + datetime.getMinutes();
+      }
 
       $scope.query = {
         date:  putTimezone($state.params.date),
         start: '00:00',
-        end:   '19:00'
+        end:   hoursAndMinutes(new Date())
       };
 
       $scope.report = report;
