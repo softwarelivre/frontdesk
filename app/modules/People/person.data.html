@@ -31,7 +31,8 @@
     <tr>
       <th colspan="2">ingresso</th>
     </tr>
-    <tr ng-click="fastForward('people.person.product')">
+    <tr ng-click="fastForward('people.person.product')"
+        ng-class="{ locked: !person.can_change_product }">
       <th ng-class="{ done:   person.category }">categoria</th>
       <td ng-class="{ empty: !person.category }">{{ person.category | humanize }}</td>
     </tr>
