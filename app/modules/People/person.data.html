@@ -56,10 +56,11 @@
     <tr ng-repeat="payment in person.payments">
       <th class="done">{{ payment.type | humanize }}</th>
       <td>
+        <small ng-show="payment.description">{{ payment.description<br/></small>
         <small ng-show="person.category == 'business'">{{ person.badge_corp }}<br/></small>
         <small ng-show="payment.type == 'government'">{{ payment.government.payer_name }}<br/></small>
-        <small ng-show="payment.type == 'cash'">[{{ payment.cash.mode | humanize }} - {{ payment.cash.cashier }}]</small>
-        <small ng-show="payment.type == 'pagseguro'">[{{ payment.pagseguro.code.substring(0,6) }}]</small>
+        <small ng-show="payment.type == 'cash'">[{{ payment.cash.mode | humanize }} - {{ payment.cash.cashier }}]<br/></small>
+        <small ng-show="payment.type == 'pagseguro'">[{{ payment.pagseguro.code.substring(0,6) }}]<br/></small>
         <small ng-show="payment.type == 'boleto'">
           <span ng-hide="payment.boleto.document_hash">
             [{{ payment.boleto.our_number }}]

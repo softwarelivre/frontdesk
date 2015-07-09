@@ -1,11 +1,19 @@
-<header>
+<header class="days">
+  <a ui-sref="reports({ date: date })" ng-repeat="date in CONFIG.EVENT_DAYS"><button>{{ date | date_locale }}</button></a>
+</header>
+
+<header class="info">
   <dl>
     <dt>usuário</dt>
     <dd>{{ cashier.name }}</dd>
     <dt>data/hora de emissão</dt>
     <dd>{{ issueTime | datetime_locale }}</dd>
     <dt>período</dt>
-    <dd>dia 8 de Julho</dd>
+    <dd class="filter">
+      dia {{ query.date | date_locale }}
+      das <input focusable ng-change="updateFilter()" ng-model="query.start" /><span>{{query.start}}</span>
+      às  <input focusable ng-change="updateFilter()" ng-model="query.end" /><span>{{query.end}}</span>
+    </dd>
   </dl>
 </header>
 

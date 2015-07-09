@@ -22,6 +22,7 @@
     .filter('date_locale',function() {
       return function(input) {
         if (!input) { return ''; }
+        if (input.length == 10) { input += " 00:00"; }
         var timestamp = Date.parse(input);
         if (isNaN(timestamp)) { return ''; }
         return (new Date(timestamp)).toLocaleDateString();

@@ -3,27 +3,34 @@
 
   angular
     .module('segue.frontdesk.reports', [
-      'segue.frontdesk',
+      'segue.frontdesk.directives',
       'restangular'
     ])
     .config(function($stateProvider) {
       $stateProvider
         .state('reports', {
-          url: '^/reports',
+          url: '^/reports/:date',
           views: {
             "content@": { controller: 'ReportController', templateUrl: 'modules/Reports/reports.html' }
           },
           resolve: {
-            report: function(Reports, $stateParams) { return Reports.forDay($stateParams.day); },
+            report: function(Reports, $stateParams) { return Reports.forDay($stateParams.date); },
             cashier: function(Auth, $stateParams) { return Auth.credentials(); }
           }
         });
     })
-    .controller("ReportController", function($scope, $state, report, cashier) {
+    .controller("ReportController", function($scope, $state, Config, report, cashier, focusOn) {
+      function putTimezone(date, customHour) {
+        var hour = (customHour)? ' '+customHour : "T00:00:00";
+        if (date.length > 10) { hour = ''; }
+        var full = date + hour + Config.TIMEZONE;
+        return full;
+      }
+
       $scope.query = {
-        day:   $state.params.day,
-        start: $state.params.start,
-        end:   $state.params.end
+        date:  putTimezone($state.params.date),
+        start: '00:00',
+        end:   '19:00'
       };
 
       $scope.report = report;
@@ -31,11 +38,10 @@
       $scope.issueTime = new Date();
 
       function periodFilter(payment) {
-        var date = new Date(payment.created);
-        var afterStartHour = !$scope.query.start || parseInt($scope.query.start) <= date.getHours();
-        var beforeEndHour  = !$scope.query.end   || parseInt($scope.query.end)   >= date.getHours();
-
-        return afterStartHour && beforeEndHour;
+        var paymentTime = Date.parse(putTimezone(payment.created));
+        var startTime   = Date.parse(putTimezone($state.params.date, $scope.query.start));
+        var endTime     = Date.parse(putTimezone($state.params.date, $scope.query.end));
+        return (paymentTime >= startTime) && (paymentTime <= endTime);
       }
       function summer(a,b) { return a + b; }
 
@@ -49,6 +55,7 @@
       };
 
       $scope.updateFilter();
+      focusOn("query.start");
 
     })
     .service('Reports', function(Restangular) {
@@ -56,7 +63,7 @@
       var self = {};
 
       self.forDay = function(day) {
-        return reports.getList();
+        return reports.one(day).getList();
       };
 
       return self;

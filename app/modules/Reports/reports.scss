@@ -20,19 +20,14 @@ main.reports {
       margin: 0 1rem 0 0.2rem;
       min-width: 3rem;
       padding: 0;
+      &.filter span { display: none; }
     }
   }
-
-  header {
-    @media print {
-      position: relative;
-      margin: 0;
-    }
-  }
-
   table {
     border-collapse: collapse;
     border: 1px solid gray;
+
+    min-width: 100%;
 
     thead {
       padding: 5px;
@@ -41,11 +36,33 @@ main.reports {
     }
     tbody {
       td {
-        min-width: 5rem;
+        min-width: 4em;
         border-bottom: 1px dotted gray;
         border-left: 1px solid gray;
         padding: 15px 15px;
       }
+    }
+  }
+}
+
+@media print {
+  header.days {
+    display: none;
+  }
+
+  header.info {
+    position: relative;
+    margin: 0;
+  }
+  td {
+    font-size: x-small;
+  }
+  dd.filter {
+    span {
+      display: inline !important;
+    }
+    input, button {
+      display: none !important;
     }
   }
 }
