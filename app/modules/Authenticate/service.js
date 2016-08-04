@@ -5,7 +5,6 @@
     .module("segue.frontdesk.authenticate.service", [
       'segue.frontdesk',
       'http-auth-interceptor',
-      'ngToast',
       'ngStorage',
       'restangular'
     ])
@@ -42,21 +41,39 @@
 
       return self;
     })
-    .service("Auth", function(Restangular, LocalSession, $sce, $q, $rootScope, ngToast) {
+    .service("Auth", function(Restangular, LocalSession, $sce, $rootScope, $state, ngToast) {
       var session = Restangular.service('sessions');
 
+      <!--TODO: MOVE TO app.js -->
       Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
         if (response.status === 400) {
-          if (!response.data.errors) { return false; }
-          var str_error_message = '<span>' + response.data.errors.message + '</span>';
-          ngToast.create({
-            content: $sce.trustAsHtml(str_error_message),
-            className: 'danger',
-            compileContent: true
-          });
+
+          <!-- TODO: REMOVE THIS HACK -->
+          if(response.data.description == 'Token is undecipherable' && response.data.error == 'Invalid JWT')
+          {
+            LocalSession.destroy();
+            $state.go('splash');
+          }
+          else
+          {
+            var str_error_message = '<span translate>' + response.data.error.message + '</span>';
+            ngToast.create({
+              content: $sce.trustAsHtml(str_error_message),
+              className: 'danger',
+              compileContent: true
+            });
+          }
           return false;
         }
+        if (response.status === 403) {
 
+            var str_error_message = '<span translate>Não permitido</span>';
+            ngToast.create({
+              content: $sce.trustAsHtml(str_error_message),
+              className: 'danger',
+              compileContent: true
+            });
+        }
         return true;
       });
 
@@ -64,23 +81,36 @@
         LocalSession.destroy();
       };
 
+      self.logoutAndSplash = function() {
+        self.logout();
+        $state.go('splash');
+      }
+
       self.login = function(email, password) {
-        if (!email || !password) { return $q.reject(); }
         LocalSession.destroy();
-        return session.post({ email: email, password: password, acceptable_roles: ['admin','cashier','frontdesk']})
+        return session.post({ email: email, password: password })
                       .then(LocalSession.create);
       };
       self.credentials = function() {
         return LocalSession.current().credentials;
       };
-      self.isCashier = function() {
-        var credentials = self.credentials();
-        if (!credentials) { return false; }
-        return _.includes(['admin','cashier'],credentials.role);
-      };
       self.token = function() {
         return LocalSession.current().token;
       };
+
+      self.isCashier = function() {
+        var credentials = self.credentials();
+        if (!credentials) { return false; }
+        return self.hasRole(credentials, 'cashier') or self.hasRole(credentials, 'admin')
+      };
+
+      self.hasRole = function(credential, role) {
+        if (!credential) { return false;}
+        for(var i=0; i < credential.roles.length; i++) {
+          if(credential.roles[i].name === role) { return true; }
+        }
+        return false;
+      }
 
       self.glue = function(target, name) {
         $rootScope.$on('auth:changed', function(_,d) { target[name] = d; });

@@ -1,0 +1,9 @@
+<div ng-repeat="lang in Locale.languages">
+  <input type="radio" name="language" id="locale.language.{{lang.abbr}}"
+         ng-click="Locale.selectLanguage(lang.abbr)"
+         ng-checked="lang.abbr == Locale.currentLanguage"/>
+  <label for="locale.language.{{lang.abbr}}">
+    <img ng-src="/images/{{lang.abbr}}.png"/>
+    <span>{{ lang.full }}</span>
+  </label>
+</div>

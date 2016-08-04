@@ -1,0 +1,111 @@
+<form class="form" name="step_adrress" novalidate>
+
+	<div class="row-fluid">
+		<div class="col-sm-12">
+  			<legend>Solicite os dados do endereço do participante:</legend>
+  		</div>
+	</div>
+
+    <div class="row-fluid">
+      <div class="form-group col-sm-12">
+        <label><span translate>Buscar por endereço:</span></label>
+        <input type="text" focusable
+               class="form-control"
+               placeholder="Rua Getulio Vargas Porto Alegre"
+               ng-model="selectedAddress"
+               ng-model-options="{ debounce: { 'default': 400 } }"
+               uib-typeahead="address as address.formatted_address for address in getLocation($viewValue)"
+               typeahead-on-select="onSelectLocation($item)"
+               typeahead-min-length="3"
+               typeahead-loading="searchLoading"
+               typeahead-no-results="searchEmpty"
+               ng-keypress="keypress($event)" >
+        <div ng-show="searchEmpty" class="help-block has-error has-feedback" translate>
+            Nenhum resultado encontrado
+        </div>
+        <div ng-show="searchLoading"  class="help-block" translate>
+            Carregando ...
+        </div>
+      </div>
+    </div>
+
+	<div class="row">
+		<div class="container-fluid">
+			<div class="form-group col-sm-6">
+				<label>País:</label>
+				<input class="form-control" focusable 
+		  		 	   ng-model="person.country" 
+		  		 	   ng-keypress="keypress($event)" placeholder="País" />
+		  		<span field-error="country"></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="form-group col-sm-6">
+			<label>Código postal:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_zipcode" 
+	  		 	   placeholder="Código postal" 
+	  		 	   ng-keypress="keypress($event)"/>
+	  		<span field-error="address_zipcode"></span>
+	  	</div>
+
+		<div class="form-group col-sm-6">
+			<label>Estado:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_state" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Estado" />
+	  		<span field-error="address_state"></span>
+	  	</div>
+	</div>
+	
+
+	<div class="row-fluid">
+
+		<div class="form-group col-sm-6">
+			<label>Cidade:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.city" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Cidade" />
+	  		<span field-error="city"></span>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label>Bairro:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_neighborhood" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Bairro" />
+	  		<span field-error="address_neighborhood"></span>
+		</div>
+
+	</div>
+
+	<div class="row-fluid">
+		<div class="form-group col-sm-12">
+			<label>Logradouro:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_street" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Logradouro" />
+	  		<span field-error="address_street"></span>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="form-group col-sm-4">
+			<label>Número:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_number" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Número" />
+	  		<span field-error="address_number"></span> 	   
+		</div>
+
+		<div class="form-group col-sm-8">
+			<label>Complemento:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.address_extra" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Complemento" />
+	  		<span field-error="address_extra"></span>
+		</div>
+	</div>
+</form>

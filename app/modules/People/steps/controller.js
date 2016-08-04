@@ -15,40 +15,25 @@
       function viewsFor(stepName, customTemplateName) {
         var templateName = customTemplateName || stepName.toLowerCase();
         return {
-          "header": { controller: 'PersonNameController', templateUrl: 'modules/People/person.header.html' },
-          "data":   { controller: 'PersonNameController', templateUrl: 'modules/People/person.data.html' },
+          "header": { controller: 'PersonBasicInfoController', templateUrl: 'modules/People/person.header.html' },
+          "data":   { controller: 'PersonBasicInfoController', templateUrl: 'modules/People/person.data.html' },
           "step":   { controller: 'Person'+stepName+'Controller', templateUrl: 'modules/People/steps/'+templateName+'.html' }
         };
       }
       function resolves(otherResolves) {
-        var defaults = { person: function(People, $stateParams) { return People.getOne($stateParams.xid); } };
+        var defaults = {};
         return _.extend(defaults, otherResolves);
       }
 
       $stateProvider
-        .state('people.person.email', {
-          url: '/email',
-          views: viewsFor('Email'),
+        .state('people.person.basicinfo', {
+          url: '/basicinfo',
+          views: viewsFor('BasicInfo', 'basic_info'),
           resolve: resolves({})
         })
-        .state('people.person.name', {
-          url: '/name',
-          views: viewsFor('Name'),
-          resolve: resolves({})
-        })
-        .state('people.person.document', {
-          url: '/document',
-          views: viewsFor('Document'),
-          resolve: resolves({})
-        })
-        .state('people.person.country', {
-          url: '/country',
-          views: viewsFor('Country'),
-          resolve: resolves({})
-        })
-        .state('people.person.city', {
-          url: '/city',
-          views: viewsFor('City'),
+        .state('people.person.address', {
+          url: '/address',
+          views: viewsFor('Address'),
           resolve: resolves({})
         })
         .state('people.person.product', {
@@ -66,14 +51,9 @@
           views: viewsFor('Payment'),
           resolve: resolves({})
         })
-        .state('people.person.badge_name', {
-          url: '/badge-name',
-          views: viewsFor('BadgeName', 'badge_name'),
-          resolve: resolves({})
-        })
-        .state('people.person.badge_corp', {
-          url: '/badge-corp',
-          views: viewsFor('BadgeCorp', 'badge_corp'),
+        .state('people.person.badge', {
+          url: '/badge',
+          views: viewsFor('Badge'),
           resolve: resolves({})
         })
         .state('people.person.print', {
@@ -86,71 +66,136 @@
           views: viewsFor('GiveBadge', 'give_badge'),
           resolve: resolves({})
         })
+        .state('people.person.corporate', {
+          url: '/corporate',
+          views: viewsFor('Corporate'),
+          resolve: resolves({
+            employees: function(People, $stateParams) { return People.getEmployees($stateParams.xid);},
+            promocodes: function(Promocodes,$stateParams) { return Promocodes.getOwnedBy($stateParams.xid)}
+          })
+        })
         .state('people.person.done', {
           url: '/done',
           views: viewsFor('Done'),
           resolve: resolves({})
-        });
+        })
     });
 
   angular
     .module('segue.frontdesk.people.steps.controller', [])
-    .controller('PersonEmailController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      $scope.step = { email: person.email };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.name', person, $scope, 'email')
-      };
-      focusOn('step.email');
-    })
-    .controller('PersonNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      $scope.step = { name: person.name };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.document', person, $scope, 'name')
-      };
-      focusOn('step.name');
-    })
-    .controller('PersonDocumentController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      $scope.step = { "document": person.document };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.country', person, $scope, 'document')
-      };
-      focusOn('step.document');
-    })
-    .controller('PersonCountryController', function($scope, $state, Config, People, focusOn, person, lazyCommit) {
-      $scope.options = Config.DEFAULT_COUNTRIES;
-      $scope.step = { country: person.country };
-      $scope.commitCountry = lazyCommit(People.patch, person.id, 'people.person.city', person, $scope, 'country');
+    .controller('PersonBasicInfoController', function($scope, $state, People, person, focusOn, lazyCommit, FormErrors) {
 
-      $scope.selectOption = function(index) {
-        var options = $scope.options.concat($scope.enteredOption);
+      if(People.isCorporate(person)) {
+        $scope.person.type = 'corporate';
+        $scope.person.cnpj = $scope.person.document;
+      } else if(People.isForeign(person)) {
+        $scope.person.type = 'foreign';
+        $scope.person.passport = $scope.person.document;
+      } else {
+        $scope.person.type = 'person';
+        $scope.person.cpf = $scope.person.document;
+      }
 
-        $scope.step.country = options[index];
-        $scope.commitCountry();
+      $scope.is_cashier = ''
+      $scope.isCorporate = People.isCorporate(person);
+
+      $scope.keypress = function(event) {
+          console.log('ke');
+          switch(event.key) {
+            case 'Enter':
+              if( !$scope.person.id ) {
+                People.createPerson($scope.person)
+                        .then(nextState)
+                        .catch(FormErrors.setError);
+              } else {
+                People.patchInfo($scope.person.id, $scope.person)
+                        .then(nextState)
+                        .catch(FormErrors.setError);
+              }
+          };
+      }
+
+      function nextState(result) {
+        $state.go('people.person.address');
       };
 
-      $scope.keypress = function($index) {
-        return {
-          up:    _.partial($scope.focusOption, $scope.options.length, $index-1),
-          down:  _.partial($scope.focusOption, $scope.options.length, $index+1),
-          enter: function() { if ($index == $scope.options.length) { $scope.selectOption($index); } }
+      focusOn('person.name');
+
+    })
+    .controller('PersonAddressController', function($scope, $state, Config, People, focusOn, lazyPost, AddressResolver, FormErrors) {
+
+      $scope.selectedAddress = '';
+
+      $scope.onFinish = function() {
+          People.patchAddress($scope.person.id, $scope.person)
+                .then(nextState)
+                .catch(FormErrors.setError);
+      };
+
+      $scope.keypress = function(event) {
+        switch(event.key) {
+          case 'Enter': $scope.onFinish(); break;
         };
       };
 
-      $scope.autoFocusOption($scope.options, person.country);
-
-    })
-    .controller('PersonCityController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      $scope.step = { city: person.city };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.product', person, $scope, 'city')
+      $scope.getLocation = function(address) {
+        return AddressResolver.fetchLocation(address).then(function(results){
+            return results.map(function(item){
+                return item;
+            });
+        });
       };
-      focusOn('step.city');
+
+      $scope.onSelectLocation = function($item){
+        var address = AddressResolver.convertToAddress($item);
+        $scope.person.country = address.country;
+        $scope.person.address_state = address.state;
+        $scope.person.city = address.city;
+        $scope.person.address_zipcode = address.zipcode;
+        $scope.person.address_neighborhood = address.neighborhood;
+        $scope.person.address_street = address.street;
+        /*TODO: FIX */
+        $scope.person.address_extra = '';
+
+        focusOnMissingAddressField([
+          'country','address_zipcode','address_state','city',
+          'address_neighborhood','address_street', 'address_number','address_extra'
+        ]);
+      };
+
+
+      function focusOnMissingAddressField(fields) {
+        for(var i=0; i<fields.length; i++)
+        {
+          if(!$scope.person[fields[i]]) {
+            focusOn('person.'+fields[i]);
+            return;
+          }
+        }
+      };
+
+      function nextState(response) {
+        $state.go('people.person.product', $scope.person.id);
+      }
+      focusOn('selectedAddress');
+
     })
     .controller('PersonProductController', function($scope, $state, Auth, Config, People, focusOn, person, products, lazyCommit) {
       $scope.is_cashier = Auth.isCashier();
-      $scope.options = products;
-      $scope.step = { product: person.product };
+      $scope.qty = 1;
+
+      $scope.options = _.filter(products, function(product) {
+        if(People.isCorporate(person))
+          return (product.category == 'business' || product.category == 'government');
+        else if(People.isForeign(person))
+          return (product.category == 'foreigner');
+        else
+          return (product.category == 'normal' || product.category == 'student');
+      });
+
+
       $scope.commitProduct = lazyCommit(People.setProduct, person.id, 'people.person.payment', person, $scope, 'product');
+
 
       $scope.backToSearch  = function() { $scope.reload('people.person.done'); };
       $scope.goToPayment   = function() { $scope.reload('people.person.payment'); };
@@ -160,8 +205,13 @@
         if (index == $scope.options.length) {
           $scope.goToPromocode();
         } else {
-          $scope.step.product = products[index];
-          $scope.commitProduct();
+          var product = $scope.options[index];
+
+          People.setPersonProduct(person.id, product, $scope.qty)
+              .then(function(result) {
+                $state.go('people.person.payment', {}, {reload: true});
+              })
+              .catch(function(error) {});
         }
       };
 
@@ -174,33 +224,141 @@
 
       $scope.autoFocusOption($scope.options, person.product, function(x) { return x.id == person.product.id; });
     })
-    .controller('PersonPromocodeController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
+    .controller('PersonPromocodeController', function($scope, $state, People, FormErrors, focusOn) {
       $scope.step = { hash_code: '' };
       $scope.tryPromocode = function() {
-        People.applyPromo(person.id, $scope.step)
+        People.applyPromo($scope.person.id, $scope.step)
               .then($scope.restart)
               .catch(FormErrors.set);
       };
       $scope.giveUp = $scope.restart;
-      $scope.keypress = { enter: $scope.tryPromocode, esc: $scope.giveUp };
+      $scope.keypress = function(event) {
+        switch(event.key) {
+          case 'Enter': $scope.tryPromocode(); break;
+          case 'Esc': $scope.giveUp(); break;
+        }
+      }
 
       focusOn('step.hash_code');
     })
-    .controller('PersonPaymentController', function($scope, $state, Auth, People, FormErrors, focusOn, person, lazyCommit) {
+    .controller('PersonCorporateController', function($scope, $state, $uibModal, People, employees,promocodes, ngToast) {
+      $scope.employees = employees;
+      $scope.promocodes = promocodes;
+
+      People.getEmployeer($scope.person.customer_id).then(function(employeer) {
+        $scope.employeer = employeer;
+      });
+
+      $scope.viewEmployee = function(employee) {
+        $state.go('people.person.badge', {xid: employee.purchase_id },  { reload: true });
+      };
+
+      $scope.registerEmployee = function(promocode) {
+
+          var modalInstance = $uibModal.open({
+                  animation: false,
+                  templateUrl: 'modules/People/steps/employee.html',
+                  controller: 'PersonNewEmployeeController',
+                  size: 'md',
+                  resolve: {
+                    employeer: function () {
+                      return $scope.person;
+                    },
+                    promocode: function() {
+                      return promocode;
+                    }
+                  }
+          });
+
+          modalInstance.result.then(function (result) {
+               $state.reload();
+          });
+      }
+
+      $scope.editBadge = function(employee) {
+        $state.go('people.person.badge', {xid: employee.purchase_id}, {reload: true});
+      };
+
+      $scope.giveBadge = function(employee) {
+        People.giveBadge(employee.last_badge.id)
+              .then(function(result) {
+                  //$scope.performSearch();
+              }).catch();
+      };
+
+      $scope.printBadge = function(employee) {
+        People.printBadge(employee.purchase_id)
+              .then(function(response) {
+                ngToast.create({
+                  content: 'Crachá enviado para a impressão.',
+                  PurclassName: 'success',
+                });
+              })
+              .catch(function(error) {
+                  ngToast.create({
+                    content:'Houve um na hora de imprimir.',
+                    PurclassName: 'danger',
+                  });
+              });
+      };
+    })
+    .controller('PersonNewEmployeeController', function($scope, $state, $uibModalInstance, focusOn, FormErrors, People, employeer, promocode) {
+      $scope.employee = {
+        phone: employeer.phone,
+        promo_hash: promocode.hash_code,
+        country: employeer.country,
+        city: employeer.city,
+        address_state: employeer.address_state,
+        address_zipcode: employeer.address_zipcode,
+        address_street: employeer.address_street,
+        address_neighborhood: employeer.address_neighborhood,
+        address_number: employeer.address_number,
+        address_extra : '',
+      };
+      /*HACK*/
+     // if(_.isString(employeer.address_extra)){
+     //   $scope.employee = employeer.address_extra;
+     // }
+
+      $scope.keypress = function(event) {
+        switch(event.key) {
+          case 'Enter': $scope.createEmployee(); break;
+        };
+      };
+
+      $scope.createEmployee = function() {
+          People.createEmployee(employeer.id, $scope.employee)
+                .then(onCreate)
+                .catch(FormErrors.setError);
+      };
+
+      function onCreate(person) {
+        $uibModalInstance.close();
+      }
+
+      focusOn('employee.name');
+
+    })
+    .controller('PersonPaymentController', function($scope, $state, Auth, People, FormErrors, focusOn, lazyCommit) {
       $scope.is_cashier = Auth.isCashier();
-      if (person.has_valid_ticket) { $scope.restart(); }
+      if ($scope.person.has_valid_ticket && !$scope.person.has_payable_ticket) { $scope.restart(); }
 
       $scope.didNotReceive = function() {
-        $state.go('people.search', { query: person.name });
+        $state.go('people.search', { query: $scope.person.name });
       };
+
+      $scope.didNotReceiveStudentDocument = function() {
+        $state.go('people.search', { query: $scope.person.name });
+      };
+
       $scope.receivedCash = function() {
-        People.receivedPayment(person.id, 'cash')
-              .then(_.partial($state.reload, 'people.person'))
+        People.receivedPayment($scope.person.id, 'cash')
+              .then(onReceivePayment)
               .catch(FormErrors.set);
       };
       $scope.receivedCard = function() {
-        People.receivedPayment(person.id, 'card')
-              .then(_.partial($state.reload, 'people.person'))
+        People.receivedPayment($scopeperson.id, 'card')
+              .then(onReceivePayment)
               .catch(FormErrors.set);
       };
 
@@ -213,39 +371,65 @@
         };
       };
 
+      function onReceivePayment(payment) {
+        if(People.isCorporate($scope.person)) {
+          $state.go('people.person.corporate', { xid: $scope.person.id}, {reload: true});
+        }
+        else {
+          $state.go('people.person.badge', {xid: $scope.person.id}, {reload: true});
+        }
+      }
+
       focusOn('option-0');
     })
-    .controller('PersonBadgeNameController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      if (!person.has_valid_ticket) { $scope.restart(); return; }
-      $scope.step = { badge_name: person.badge_name };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.badge_corp', person, $scope, 'badge_name')
+    .controller('PersonBadgeController', function($scope, $state, People, FormErrors, focusOn, lazyCommit) {
+      if (!$scope.person.has_valid_ticket) { $scope.restart(); return; }
+
+      $scope.badge = {
+        badge_name: $scope.person.badge_name,
+        badge_corp: ''
       };
-      focusOn('step.badge_name');
-    })
-    .controller('PersonBadgeCorpController', function($scope, $state, People, focusOn, person, lazyCommit) {
-      if (!person.has_valid_ticket) { $scope.restart(); return; }
-      $scope.step = { badge_corp: person.badge_corp };
-      $scope.keypress = {
-        enter: lazyCommit(People.patch, person.id, 'people.person.print', person, $scope, 'badge_corp')
-      };
-      if (person.can_change_badge_corp) {
-        focusOn('step.badge_corp');
-      } else {
-        focusOn('option-0');
+
+      if(_.isString($scope.person.badge_corp))
+      {
+        $scope.badge.badge_corp = $scope.person.badge_corp;
       }
+
+
+      $scope.keypress = function(event) {
+        switch(event.key) {
+          case 'Enter': $scope.submit();
+        }
+      }
+
+      $scope.submit = function() {
+        People.patchBadge($scope.person.id, $scope.badge)
+              .then(nextState)
+              .catch(FormErrors.setError)
+      };
+
+      function nextState() {
+        $state.go('people.person.give_badge')
+      }
+
+      if($scope.badge.badge_corp.length > 1 ) {
+        focusOn('badge.badge_corp');
+      } else {
+        focusOn('badge.badge_name');
+      }
+
     })
-    .controller('PersonPrintController', function($scope, $state, People, Flash, focusOn, person, lazyCommit) {
-      if (!person.has_valid_ticket) { $scope.restart(); return; }
+    .controller('PersonPrintController', function($scope, $state, People, Flash, focusOn) {
+      if (!$scope.person.has_valid_ticket) { $scope.restart(); return; }
 
       function nextPage() {
-        $state.go('people.person.give_badge', $state.params);
+        $state.go('people.person.give_badge', $state.params, {reload: true});
       }
       console.log("in controller print");
 
       $scope.print = function() {
         console.log("in print()");
-        People.printBadge(person.id)
+        People.printBadge($scope.person.id)
               .then(nextPage)
               .catch(Flash.set)
               .then(nextPage);
@@ -254,11 +438,10 @@
       $scope.print();
     })
     .controller('PersonGiveBadgeController', function($scope, $state, People, FormErrors, focusOn, person, lazyCommit) {
-      if (!person.last_badge)       { $scope.restart(); return; }
-      if (!person.has_valid_ticket) { $scope.restart(); return; }
+      if (!$scope.person.has_valid_ticket) { $scope.restart(); return; }
 
       $scope.given = function() {
-        People.giveBadge(person.last_badge.id)
+        People.giveBadge($scope.person.last_badge.id)
               .then(_.partial($scope.fastForward, 'people.person.done'))
               .catch(FormErrors.set);
       };
@@ -267,21 +450,20 @@
         $scope.fastForward('people.person.print');
       };
       $scope.editBadge = function() {
-        $scope.fastForward('people.person.badge_name');
+        $scope.fastForward('people.person.badge');
       };
 
       $scope.keypress = function($index) {
         return {
-          up:    _.partial($scope.focusOption, 3, $index-1),
-          down:  _.partial($scope.focusOption, 3, $index+1),
+          left:    _.partial($scope.focusOption, 3, $index-1),
+          right:   _.partial($scope.focusOption, 3, $index+1),
         };
       };
       focusOn("option-0");
     })
     .controller('PersonDoneController', function($scope, $state, $timeout) {
       $timeout(function() {
-        $state.go('people.search');
+        $state.go('people.search', {query: $scope.person.id});
       },1500);
     });
-
 })();

@@ -1,4 +1,15 @@
-<form>
-  <input ng-model="query.needle" focusable id="query-needle"
+<h2 class="page-header">Buscar pessoas</h2>
+
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li class="active">Pessoas</li>
+</ol>
+
+<form class="form">
+  <label>Inscrição, Nome, E-mail ou Documento:</label>
+  <input class="form-control" ng-model="query.needle" focusable id="query-needle"
          ui-keydown="keypress.query" />
 </form>
+
+
+<ng-include src="'modules/People/people.list.html'" ></ng-include>

@@ -11,15 +11,23 @@
         .state('reports', {
           url: '^/reports/:date',
           views: {
-            "content@": { controller: 'ReportController', templateUrl: 'modules/Reports/reports.html' }
+            header: {                               templateUrl: 'modules/common/nav.html' },
+            main: { controller: 'ReportController', templateUrl: 'modules/Reports/reports.html' }
           },
           resolve: {
-            report: function(Reports, $stateParams) { return Reports.forDay($stateParams.date); },
+            report: function(Reports, $stateParams) {
+              if(_.isString($stateParams.date) && $stateParams.date.length==0)
+              {
+                $stateParams.date = new Date().toISOString().slice(0, 10);
+              }
+              return Reports.forDay($stateParams.date); 
+            },
             cashier: function(Auth, $stateParams) { return Auth.credentials(); }
           }
         });
     })
     .controller("ReportController", function($scope, $state, Config, report, cashier, focusOn) {
+
       function putTimezone(date, customHour) {
         var hour = (customHour)? ' '+customHour : "T00:00:00";
         if (date.length > 10) { hour = ''; }
@@ -57,6 +65,7 @@
         $scope.cardSum  = _.chain($scope.filtered).filter(isCard).pluck('amount').map(parseFloat).reduce(summer, 0);
       };
 
+      $scope.filtered = report;
       $scope.updateFilter();
       focusOn("query.start");
 

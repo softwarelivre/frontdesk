@@ -1,12 +1,7 @@
-<div>
-  <a ng-href="{{ person.uri }}" target="_blank">debug</a>
-  <a ng-click="restart()">reload</a>
-</div>
-<img gravatar-src="person.email" gravatar-size="100">
-<h1>{{ person.name }}</h1>
-<h2>{{ person.id }}</h2>
-<h3>
-  {{ person.category | humanize }} -
-  <span ng-show="person.has_valid_ticket">entrada autorizada</span>
-  <span ng-hide="person.has_valid_ticket">entrada pendente</span>
-</h3>
+<h2 class="page-header">Dados do(a) {{ person.name }} - {{person.id}} </h2>
+
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a ui-sref="people.search">Buscar pessoa</a></li>
+  <li class="active">Dados da pessoa</li>
+</ol>

@@ -1,9 +1,15 @@
 <form class="fill">
-  <h3>solicite código promocional do participante</h3>
-  <input focusable ng-model="step.hash_code" ui-keydown="keypress" placeholder="(deve iniciar com 'PC')" />
-  <div form-error="promocode.*">código inválido</div>
+  <legend>Solicite código promocional do participante</legend>
 
-  <button ng-click="giveUp()" class="give_up">
-    desistir da aplicação
-  </button>
+	<div class="form-group">
+		<label>Código promocional:</label>
+		<input focusable 
+			   ng-model="step.hash_code" 
+			   class="form-control" 
+			   ng-keypress="keypress($event)"  />
+		<span form-error="promocode.*">Código inválido</span>
+
+	</div>
+
+  <button class="btn btn-default" ng-click="giveUp()">Voltar</button>
 </form>

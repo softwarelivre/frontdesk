@@ -11,8 +11,8 @@
         .state('home', {
           url: '^/',
           views: {
-            query:   { },
-            content: { templateUrl: 'modules/Home/home.html', controller: 'HomeController' }
+            header: {                               templateUrl: 'modules/common/nav.html' },
+            main: { templateUrl: 'modules/Home/home.html', controller: 'HomeController' }
           }
         });
     });

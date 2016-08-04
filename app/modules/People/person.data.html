@@ -1,59 +1,85 @@
-<table class="data" ng-class="{ loading: !person }">
-  <tbody>
+<table class="table table table-striped table-condensed" ng-class="{ loading: !person }">
+  <thead>
     <tr ng-click="fastForward('people.person')">
-      <th colspan="2">dados básicos</th>
+      <th colspan="2">Dados básicos</th>
     </tr>
-    <tr ng-click="fastForward('people.person.email')">
-      <th ng-class="{ done:   person.email }"   >email</th>
-      <td ng-class="{ empty: !person.email }"   >{{ person.email    || 'não informado' }}</td>
+  </thead>
+  <tbody>
+    <tr ng-click="fastForward('people.person.basicinfo')">
+      <th>
+        <i ng-show="person.email" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.email" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Email
+      </th>
+      <td>{{ person.email    || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.name')">
-      <th ng-class="{ done:   person.name }"    >nome</th>
-      <td ng-class="{ empty: !person.name }"    >{{ person.name     || 'não informado' }}</td>
+    <tr ng-click="fastForward('people.person.basicinfo')">
+      <th>
+        <i ng-show="person.name" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.name" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Nome
+      </th>
+      <td>{{ person.name     || 'não informado' }}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.document')">
-      <th ng-class="{ done:   person.document }">
-        <span ng-show="person.is_brazilian">cpf</span>
-        <span ng-hide="person.is_brazilian">passaporte</span>
+    <tr ng-click="fastForward('people.person.basicinfo')">
+      <th class="text-nowrap">
+        <i ng-show="person.document" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.document" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Documento
       </th>
       <td ng-class="{ empty: !person.document }">{{ (person.document )|| 'não informado'}}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.country')">
-      <th ng-class="{ done:   person.country }" >país</th>
-      <td ng-class="{ empty: !person.country }" >{{ person.country  || 'não informado' }}</td>
-    </tr>
-    <tr ng-click="fastForward('people.person.city')" ng-hide="isForeign">
-      <th ng-class="{ done:   person.city }"    >cidade</th>
-      <td ng-class="{ empty: !person.city }"    >{{ person.city || 'não informado' }}</td>
-    </tr>
   </tbody>
+</table>
+
+<table  class="table table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th colspan="2">
+      <i ng-show="!person.can_change_product" class="fa fa-lock text-warning" aria-hidden="true"></i>
+      Ingresso
+      </th>
+    </tr>
+  </thead>
   <tbody>
-    <tr>
-      <th colspan="2">ingresso</th>
+    <tr ng-click="fastForward('people.person.product')">
+      <th class="text-nowrap">
+        <i ng-show="person.category" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.category" class="fa fa-times text-danger" aria-hidden="true"></i>
+      Categoria</th>
+      <td>{{ person.category | humanize }}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.product')"
-        ng-class="{ locked: !person.can_change_product }">
-      <th ng-class="{ done:   person.category }">categoria</th>
-      <td ng-class="{ empty: !person.category }">{{ person.category | humanize }}</td>
-    </tr>
     <tr>
-      <th ng-class="{ done:   person.has_valid_ticket }">produto</th>
+      <th class="text-nowrap"> 
+        <i ng-show="person.has_valid_ticket" class="fa fa-check text-success" aria-hidden="true"></i>
+        Produto
+      </th>
       <td>{{ person.product.description }}</td>
     </tr>
     <tr>
-      <th ng-class="{ done:   person.has_valid_ticket }">situação</th>
-      <td ng-class="{ empty: !person.has_valid_ticket }">{{ person.status | humanize }}</td>
+      <th>
+        <i ng-show="person.has_valid_ticket" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.has_valid_ticket" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Situação
+      </th>
+      <td> {{ person.status | humanize }}</td>
     </tr>
     <tr ng-show="person.outstanding_amount">
-      <th>pendente</th>
+      <th>Pendente</th>
       <td>{{ person.outstanding_amount | realbrasileiro }}</td>
     </tr>
   </tbody>
+</table>
 
-  <tbody ng-show="person.payments.length">
+
+
+<table  class="table table-striped table-condensed" ng-show="person.payments.length">
+  <thead>
     <tr>
-      <th colspan="2">pagamentos recebidos</th>
+      <th colspan="2">Pagamentos recebidos</th>
     </tr>
+  </thead>
+  <tbody>
     <tr ng-repeat="payment in person.payments">
       <th class="done">{{ payment.type | humanize }}</th>
       <td>
@@ -81,28 +107,49 @@
       </td>
     </tr>
   </tbody>
+</table>
+
+
+<table class="table table table-striped table-condensed" ng-show="person.has_valid_ticket">
+
+  <thead>
+    <tr>
+      <th colspan="2">Etiqueta/Material</th>
+    </tr>
+  </thead>
 
   <tbody ng-show="person.has_valid_ticket">
-    <tr ng-click="fastForward('people.person.badge_name')">
-      <th colspan="2">etiqueta/material</th>
+    <tr ng-click="fastForward('people.person.badge')">
+      <th>
+        <i ng-show="person.badge_name" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.badge_name" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Nome
+      </th>
+      <td>{{ person.badge_name }}</td>
     </tr>
-    <tr ng-click="fastForward('people.person.badge_name')">
-      <th ng-class="{ done:   person.badge_name }">nome</th>
-      <td ng-class="{ empty: !person.badge_name }">{{ person.badge_name }}</td>
-    </tr>
-    <tr ng-click="fastForward('people.person.badge_corp')"
-        ng-class="{ locked: !person.can_change_badge_corp }">
-      <th ng-class="{ done:   person.badge_corp }">empresa</th>
-      <td ng-class="{ empty: !person.badge_corp }">{{ person.badge_corp }}</td>
+    <tr ng-click="fastForward('people.person.badge')">
+      <th class="text-nowrap">
+        <i ng-show="person.badge_corp" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.badge_corp" class="fa fa-question text-warning" aria-hidden="true"></i>
+      Empresa</th>
+      <td>{{ person.badge_corp }}</td>
     </tr>
     <tr ng-click="fastForward('person.print_badge')">
-      <th ng-class="{ done:  person.last_badge.was_ok }">impresso?</th>
+      <th class="text-nowrap">
+        <i ng-show="person.last_badge.was_ok" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.last_badge.was_ok" class="fa fa-times text-danger" aria-hidden="true"></i>
+        Impresso?
+      </th>
       <td ng-show="person.last_badge.was_ok">{{ person.last_badge.printer }}</td>
-      <td ng-hide="person.last_badge.was_ok">erro! clique para tentar de novo</td>
+      <td ng-hide="person.last_badge.was_ok">Clique para tentar de novo</td>
     </tr>
 
     <tr ng-click="fastForward('person.give_badge')">
-      <th ng-class="{ done: person.last_badge.given }">entregue?</th>
+      <th class="text-nowrap">
+        <i ng-show="person.last_badge.given" class="fa fa-check text-success" aria-hidden="true"></i>
+        <i ng-show="!person.last_badge.given" class="fa fa-times text-danger" aria-hidden="true"></i>
+      Entregue?
+      </th>
       <td>
           {{ person.last_badge.given | datetime_locale }}
           <span ng-hide="person.last_badge.given">nenhuma entrega registrada</span>

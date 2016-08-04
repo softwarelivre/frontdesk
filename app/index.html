@@ -2,7 +2,13 @@
 <html ng-app="segue.frontdesk">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    
     <title>fisl - frontdesk</title>
     <!-- inject:vendor:css -->
     <!-- endinject -->
@@ -17,6 +23,35 @@
     <script src='config.js'></script>
   </head>
   <body ng-controller="FrontDeskController" class="{{ topState }} {{ deviceClass }}">
+
+    <header class=" {{ topState }}" ui-view="header">
+    </header>
+
+    <toast></toast>
+
+    <main>
+      <div class="container">
+          <div class="{{ topState }}" ui-view="main"></div>
+      </div>
+    </main>
+
+
+    <footer>
+      <div class="container-fluid footer">
+        <div class="pull-left">
+            <strong translate>Problemas?</strong>&nbsp;
+              <a href="mailto:financeiro@espacodeprojetos.com.br?subject=[BUG] Notificação&body=Descreva seu problema:">
+                financeiro@espacodeprojetos.com.br
+              </a>
+            </span>
+        </div>
+        <div class="pull-right">
+          <span> {{ state.name }} </span>
+        </div>
+      </div>
+    </footer>
+
+<!--
     <header class="bar noprint {{ topState }}">
         <img class="logo" ng-click="home()" src="/images/logo-fisl-small.png"/>
         <h1>
@@ -50,8 +85,5 @@
 
     <main class="{{ topState }} {{ subState }}" ui-view="content">
     </main>
-
-    <footer class="noprint">
-      {{ state.name }}
-    </footer>
+-->
   </body>

@@ -1,0 +1,49 @@
+<form class="form">
+
+  <div ng-show="!options.length">
+      <p><strong>Nenhum produto cadastrado</strong></p>
+      <button type="button"
+              class="btn btn-primary"
+              ng-click="backToSearch()" focusable="option-0">Ok</button>
+  </div>
+
+  <div ng-show="options.length">
+    <h3 ng-show="options.length">Selecione uma opção para doação:</h3>
+
+    <hr>
+
+    <h4 ng-show="options.length">
+      Use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de opção e
+      <kbd>enter</kbd> para selecionar
+    </h4>
+
+    <hr>
+
+    <div class="container-fluid" ng-show="isCorporate">
+      <div class="form-group">
+        <label>Valor:</label>
+       <input type="text" class="form-control" ng-model="qty"/>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="btn-group-vertical" style="width:100%;">
+        <button type="button"
+                class="btn btn-primary"
+                ng-repeat="option in options" ng-click="selectOption($index)"
+                ui-keydown="keypress($index)" focusable="option-{{ $index }}">
+                {{ option.description }}
+          <span ng-show="option.id == person.product.id">*</span>
+        </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-click="cancelDonation()">Cancelar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</form>

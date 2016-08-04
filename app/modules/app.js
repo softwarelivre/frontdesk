@@ -7,14 +7,18 @@
   angular
     .module('segue.frontdesk',[
       'templates',
-      'ui.gravatar',
       'ui.router',
       'ui.router.compat',
       'ui.keypress',
       'ngToast',
       'restangular',
       'angular-loading-bar',
+      'ui.bootstrap',
+      'ngToast',
+      'ngMask',
+      'angularMoment',
 
+      'segue.frontdesk.locale',
       'segue.frontdesk.humanized',
       'segue.frontdesk.errors',
       'segue.frontdesk.filters',
@@ -24,7 +28,10 @@
       'segue.frontdesk.people',
       'segue.frontdesk.printers',
       'segue.frontdesk.reports',
+      'segue.frontdesk.speakers',
+      'segue.frontdesk.purchase.service',
       'segue.frontdesk.visitors',
+      'segue.frontdesk.donation'
     ])
     .controller('FrontDeskController', function($scope, $state, DeviceType, Auth, Printers, Config) {
       $scope.deviceClass = (DeviceType.isMobile())? 'mobile':'desktop';

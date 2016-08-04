@@ -1,0 +1,51 @@
+<form class="choose payment">
+  
+  <div ng-show="!person.product.can_pay_cash">
+    <h3>Atenção!</h3>
+    <h4>não é possível pagar este ingresso</h4>
+    <p>{{person.product.can_pay_cash}}</p>
+    <div ng-show="person.status == 'stale'">
+      <h5>ingresso vencido</h5>
+      <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+    </div>
+  </div>
+
+
+  <div ng-show="person.product.can_pay_cash">
+    <h2>
+      Cobre o valor: <strong>R$ {{ person.outstanding_amount }}</strong>
+    </h2>
+
+
+    <hr>
+
+    <h4>
+      Use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de método<br/>
+      de pagamento, <kbd>enter</kbd> para selecionar
+    </h4>
+
+    <hr>
+
+    <div class="btn-group-vertical" style="width:100%;">
+   
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="receivedCash()"  ui-keydown="keypress(0)" focusable="option-0">
+          Recebido em dinheiro
+      </button>
+
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="receivedCard()"  ui-keydown="keypress(1)" focusable="option-1">
+          Recebido em cartão de crédito
+      </button>
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="didNotReceive()" ui-keydown="keypress(2)" focusable="option-2">
+          Não recebi o pagamento
+      </button>
+    </div>
+
+
+  </div>
+</form>

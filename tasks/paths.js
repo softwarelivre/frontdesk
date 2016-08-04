@@ -2,7 +2,12 @@
   "use strict"
 
   module.exports = {
-    stylesheets   : ['app/modules/**/*.scss'],
+    stylesheets   : [
+      'app/modules/**/**/**/bootstrap.min.css', //FIX
+      'app/modules/**/**/**/bootstrap-theme.min.css',
+      'app/modules/**/**/**/ui-bootstrap-csp.css',
+      'app/modules/**/*.css'
+    ],
     javascripts   : 'app/modules/**/*.js',
     templates     : 'app/modules/**/*.html',
     index         : 'app/index.html',

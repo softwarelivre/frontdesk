@@ -28,8 +28,25 @@
         return people.one(xid).patch(data);
       };
 
+      self.patchInfo = function(xid, data) {
+        return people.one(xid).one('patch_info').patch(data);
+      }
+
+      self.patchAddress = function(xid, data) {
+        return people.one(xid).one('patch_address').patch(data);
+      }
+
+      self.patchBadge = function(xid, badge) {
+        return people.one(xid).one('badge').patch(badge);
+      }
+
       self.setProduct = function(xid, step) {
         return people.one(xid).post('product', { product_id: step.product.id });
+      };
+
+      /* TODO: REMOVE */
+      self.setPersonProduct = function(xid, product, qty) {
+        return people.one(xid).post('product', { product_id: product.id, qty: qty });
       };
 
       self.printBadge = function(xid) {
@@ -47,6 +64,69 @@
         return people.one(xid).post('promo', data);
       };
 
+      self.getEmployeer = function(xid) {
+        return people.one(xid).one('employeer').get();
+      }
+
+      self.createEmployee = function (xid, data) {
+         return people.one(xid).one('employees').post('add', data);
+      };
+
+      self.getEmployees = function (xid) {
+         return people.one(xid).one('employees').getList();
+      };
+
+      self.addNewProduct = function(purchase_id) {
+        return people.one(purchase_id).post('add_product');
+      }
+
+      self.getProducts = function(person_id) {
+        return people.one(person_id).one('eligible').getList();
+      }
+
+      self.getDonationProducts = function(person_id) {
+        return people.one(person_id).one('donation').one('eligible').getList();
+      }
+
+      self.setDonationProduct = function(xid, product_id, amount) {
+        var params = {
+          product_id: product_id,
+          amount: amount
+        }
+        return people.one(xid).one('donation').post('change', params);
+      };
+
+      self.makeDonation = function(purchase_id) {
+        return people.one(purchase_id).one('donation').post('new');
+      }
+
+      self.receivedDonationPayment = function(xid, mode) {
+        return people.one(xid).one('pay').post('donation', { mode: mode });
+      };
+
+      extensions.isUser = function(account) {
+        return extensions.hasRole(account, 'user');
+      };
+
+      extensions.isAdmin = function(account) {
+        return extensions.hasRole(account, 'admin');
+      };
+
+      extensions.isForeign = function(account) {
+        return extensions.hasRole(account, 'foreign');
+      };
+
+      extensions.isCorporate = function(account) {
+        return extensions.hasRole(account, 'corporate');
+      }
+
+      extensions.hasRole = function(account, role) {
+        for(var i=0; i < account.roles.length; i++) {
+          if(account.roles[i].name === role) { return true; }
+        }
+        return false;
+      }
+
       return self;
     })
     .factory('lazyCommit', function(FormErrors) {
@@ -59,6 +139,21 @@
           }
           else {
             console.log('commiting changes on', field);
+            commitFn(xid, scope.step).then(function(person) { scope.reload(nextState); })
+                                     .catch(FormErrors.set);
+          }
+        };
+      };
+    })
+    .factory('lazyPost', function(FormErrors) {
+      return function(commitFn, xid, nextState, form, scope) {
+        return function() {
+          if (!form.$dirty) {
+            console.log('no changes, so it will be lazy');
+            scope.fastForward(nextState);
+          }
+          else {
+            console.log('submitting changes');
             commitFn(xid, scope.step).then(function(person) { scope.reload(nextState); })
                                      .catch(FormErrors.set);
           }

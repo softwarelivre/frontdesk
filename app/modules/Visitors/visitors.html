@@ -1,17 +1,66 @@
-<form>
-  <h1>
-    visitantes
-  </h1>
+<h2>
+  Cadastro de visitantes
+</h2>
+  
+<hr>
 
-  <input ng-model="visitor.name"     focusable="name"  placeholder="nome"
-         ui-keypress="{ 'enter': 'focusEmail()' }" />
-  <input ng-model="visitor.email"    focusable="email" placeholder="e-mail"
-         ui-keypress="{ 'enter': 'focusDoc()' }" />
-  <input ng-model="visitor.document" focusable="document"  placeholder="documento"
-         ui-keypress="{ 'enter': 'commit()' }" />
+<form class="form">
 
+   <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label class="required">Nome completo:</label>
+        <input class="form-control" 
+               ng-model="visitor.name" 
+               focusable="name"
+               ng-keypress="keypress($event)" placeholder="Nome completo" />
+        <span field-error="name"></span>     
+      </div>
+   </div>
 
-  <h5 ng-show="error">
-    <b>erro:</b> {{ error }}</br>
-  </h5>
+   <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label>Nome para o crachá:
+          <small class="text-muted">(Máximo 20 caracteres)</small>
+        </label>
+        <input class="form-control" 
+               ng-model="visitor.badge_name" 
+               focusable="badge_name"
+               maxlength="20"
+               ng-keypress="keypress($event)" placeholder="Nome para o crachá" />
+        <span field-error="badge_name"></span>     
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label class="required">CPF:</label>
+        <input class="form-control" 
+               ng-model="visitor.document" 
+               mask="999.999.999-99" clean="true"
+               ng-keypress="keypress($event)" placeholder="CPF" />
+        <span field-error="document"></span>     
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label class="required">E-mail:</label>
+        <input class="form-control" 
+               ng-model="visitor.email" 
+               ng-keypress="keypress($event)" placeholder="Email" />
+        <span field-error="email"></span>     
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label class="required">Telefone:</label>
+        <input class="form-control" 
+               ng-model="visitor.phone" 
+               ng-keypress="keypress($event)"
+               mask="(99) 9?9?999-9999" clean="true"/>
+        <span field-error="phone"></span>     
+      </div>
+   </div>
+
 </form>

@@ -1,0 +1,64 @@
+<load-credentials></load-credentials> <!--FIX HACK LOAD ACCOUNT INFO -->
+
+<nav class="navbar navbar-default navbar-static-top inverted">
+
+    <div class="container">
+
+    <div class="navbar-header">
+      <button type ="button"
+              class="navbar-toggle"
+              ng-init="menuCollapsed=true"
+              ng-click="menuCollapsed=!menuCollapsed">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="splash">Segue</a>
+    </div>
+
+
+
+    <div class="navbar-collapse collapse" uib-collapse="menuCollapsed">
+
+      <ul class="nav navbar-nav navbar-left" ng-show="credentials">
+
+        <li><a ui-sref="people.search" translate>Home</a></li>
+
+        <li  ng-class="{'active': state.name == 'people.search'}">
+          <a   ui-sref="people.search" translate>Buscar</a>
+        </li>
+
+        <li  ng-class="{'active': state.name == 'people.person.create'}">
+          <a   ui-sref="people.create" translate>Participantes</a>
+        </li>
+
+        <li  ng-class="{'active': state.name == 'visitors'}">
+          <a   ui-sref="visitors" translate>Visitantes</a>
+        </li>
+
+        <li  ng-class="{'active': state.name == 'speakers'}">
+          <a  ui-sref="speakers" translate>Isentos</a>
+        </li>
+        <li ng-class="{'active': state.name == 'reports'}">
+          <a  ui-sref="reports" translate>Relatórios</a>
+        </li>
+
+        <printers />
+
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li uib-dropdown class="dropdown" ng-show="credentials">
+          <a uib-dropdown-toggle role="button"  href="#">{{ credentials.email }}<span class="caret"></span></a>
+          <ul uib-dropdown-menu class="dropdown-menu">
+            <li>
+              <a class="logout-text" href="" ng-click="logout()" translate>Sair</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>

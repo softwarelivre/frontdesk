@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <strong>Cadastrar funcionário</strong>
+</div>
+<div class="modal-body">
+
+<div class="container-fluid">
+
+    <div class="form-group has-feedback col-sm-12">
+      <label class="required">Nome completo:</label>
+      <input class="form-control" focusable
+             ng-model="employee.name" 
+             placeholder="Nome completo"
+             ng-keypress="keypress($event)" />
+      <span field-error="name"></span>     
+    </div>
+
+    <div class="form-group col-sm-12">
+      <label class="required">Email:</label>
+      <input class="form-control" focusable 
+              ng-model="employee.email" 
+              placeholder="E-Mail" 
+              ng-keypress="keypress($event)" />
+      <span field-error="email"></span>            
+    </div>
+
+    <div class="form-group col-sm-12">
+      <label class="required">CPF:</label>
+      <input class="form-control" focusable 
+               ng-model="employee.cpf" 
+               placeholder="CPF"
+               mask="999.999.999-99" clean="true"
+               ng-keypress="keypress($event)" />
+      <span field-error="cpf"></span>            
+    </div>
+
+</div>
+
+</div>
+

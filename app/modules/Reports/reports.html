@@ -1,58 +1,88 @@
-<header class="days">
-  <a ui-sref="reports({ date: date })" ng-repeat="date in CONFIG.EVENT_DAYS"><button>{{ date | date_locale }}</button></a>
-</header>
+<h2>Relatório</h2>  
+<hr>
+
+<h4><strong>Selecione o dia para gerar o relatório:</strong></h4>
+<div class="btn-group">
+  <button ng-repeat="date in CONFIG.EVENT_DAYS" 
+          class="btn btn-primary" 
+          ui-sref="reports({ date: date })"> {{ date | date_locale }}
+  </button>
+</div>
+
+<hr>
 
 <header class="info">
   <dl>
-    <dt>usuário</dt>
+    <dt>Usuário:</dt>
     <dd>{{ cashier.name }}</dd>
-    <dt>data/hora de emissão</dt>
+    
+    <dt>Data/hora de emissão:</dt>
     <dd>{{ issueTime | datetime_locale }}</dd>
-    <dt>período</dt>
-    <dd class="filter">
-      dia {{ query.date | date_locale }}
-      das <input focusable ng-change="updateFilter()" ng-model="query.start" /><span>{{query.start}}</span>
-      às  <input focusable ng-change="updateFilter()" ng-model="query.end" /><span>{{query.end}}</span>
+    
+    <dt>Período:</dt>
+    <dd>
+      Dia {{ query.date | date_locale }}
+      <form class="form-inline">
+        <span><strong>Hora inicial:</strong></span> 
+        <input class="form-control" focusable 
+               ng-change="updateFilter()" 
+               ng-model="query.start" />
+        <span><strong>Hora final:</strong></span>
+        <input class="form-control" focusable ng-change="updateFilter()" ng-model="query.end" />
+      </form>
+
     </dd>
   </dl>
 </header>
 
-<table class="reports">
-  <thead>
-    <tr>
-      <th>data</th>
-      <th>horário</th>
-      <th>modo</th>
-      <th>valor</th>
-      <th>nº insc.</th>
-      <th>nome partic.</th>
-      <th>descrição</th>
-    </tr>
-  </thead>
-  <tbody ng-repeat="payment in filtered">
-    <tr ng-repeat="transition in payment.transitions">
-      <td>{{ transition.created | date_locale }}</td>
-      <td>{{ transition.created | time_locale }}</td>
-      <td>{{ transition.mode | humanize }}</td>
-      <td>{{ payment.amount | realbrasileiro }}</td>
-      <td>{{ payment.person.id }}</td>
-      <td>{{ payment.person.name }}</td>
-      <td>{{ payment.person.description }} </td>
-    </tr>
-  </tbody>
-</table>
+<div ng-show="filtered.length > 0">
 
-<footer class="print">
+<div class="table-responsive" ">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Modo</th>
+        <th>Valor</th>
+        <th>Nº insc.</th>
+        <th>Nome partic.</th>
+        <th>Descrição</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="payment in filtered">
+      <tr ng-repeat="transition in payment.transitions">
+        <td>{{ transition.created | date_locale }}</td>
+        <td>{{ transition.created | time_locale }}</td>
+        <td>{{ transition.mode | humanize }}</td>
+        <td>{{ payment.amount | realbrasileiro }}</td>
+        <td>{{ payment.person.id }}</td>
+        <td>{{ payment.person.name }}</td>
+        <td>{{ payment.person.description }} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr>
+
+<footer>
   <h3>
-    operações:
+    Operações:
     {{ filtered.length }}
   </h3>
 
-  <h2>
-    valor total: {{ totalSum | realbrasileiro }}
+  <h3>
+    Valor total: {{ totalSum | realbrasileiro }}
     <br/>
-    dinheiro: {{ cashSum | realbrasileiro }}
+    Dinheiro: {{ cashSum | realbrasileiro }}
     <br/>
-    cartão: {{ cardSum | realbrasileiro }}
-  </h2>
+    Cartão: {{ cardSum | realbrasileiro }}
+  </h3>
 </footer>
+</div>
+
+<div ng-show="filtered.length == 0">
+  <hr>
+  <h3>Nenhum registro encontrado</h3>
+</div>

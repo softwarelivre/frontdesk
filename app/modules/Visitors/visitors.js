@@ -12,7 +12,8 @@
         .state('visitors', {
           url: '^/visitors',
           views: {
-            "content@": { controller: 'VisitorController', templateUrl: 'modules/Visitors/visitors.html' }
+            header: {                               templateUrl: 'modules/common/nav.html' },
+            main: { controller: 'VisitorController', templateUrl: 'modules/Visitors/visitors.html' }
           },
         });
     })
@@ -20,12 +21,16 @@
       $scope.visitor = { name: '', email: '', document: '' };
       focusOn('name');
 
-      $scope.focusEmail = _.partial(focusOn, 'email');
-      $scope.focusDoc   = _.partial(focusOn, 'document');
-      $scope.commit     = function() {
+      $scope.keypress = function(event) {
+        switch(event.key) {
+          case 'Enter': commit(); break;
+        };
+      }
+
+      function commit() {
         Visitors.create($scope.visitor)
                 .then($state.reload())
-                .catch(FormErrors.set);
+                .catch(FormErrors.setError);
       };
     })
     .service('Visitors', function(Restangular, Printers) {

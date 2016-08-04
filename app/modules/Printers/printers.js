@@ -18,6 +18,11 @@
           load();
 
           $scope.$on('auth:changed', load);
+
+          $scope.setCurrent = function(printer) {
+            Printers.setCurrent(printer);
+          };
+
         }
       };
     })

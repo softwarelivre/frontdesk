@@ -1,0 +1,119 @@
+<form class="form" name="step_adrress" novalidate>
+
+	<div class="row-fluid">
+		<div class="col-sm-12">
+  			<legend>Solicite os dados pessoais do participante:</legend>
+  		</div>
+	</div>
+
+
+	<div class="row-fluid">
+
+        <div class="form-group has-feedback col-sm-12">
+          <label class="required">
+            <span translate>Tipo da conta:</span>
+          </label>
+          <label class="radio-inline">
+            <input type="radio" value="person" ng-model="person.type">Pessoal
+          </label>
+
+          <label class="radio-inline">
+            <input type="radio" value="corporate" ng-model="person.type">Empresarial
+          </label>
+          
+          <label class="radio-inline">
+            <input type="radio" value="foreign" ng-model="person.type">Estrangeiro
+          </label>
+          <span field-error="type"></span>
+      	</div>
+
+      	<div ng-show="person.type == 'person'">
+			<div class="form-group has-feedback col-sm-12">
+				<label class="required">Nome completo:</label>
+				<input class="form-control" focusable
+		  		 	   ng-model="person.name" 
+		  		 	   ng-keypress="keypress($event)" placeholder="Nome completo" />
+				<span field-error="name"></span> 	   
+			</div>
+
+			<div class="form-group col-sm-12">
+				<label class="required">CPF:</label>
+				<input class="form-control" focusable 
+		  		 	   ng-model="person.cpf" 
+		  		 	   mask="999.999.999-99" clean="true"
+		  		 	   ng-keypress="keypress($event)" placeholder="CPF" />
+		  		<span field-error="cpf"></span> 	    	   
+			</div>
+		</div>
+
+
+		<div ng-show="person.type == 'corporate'">
+
+			<div class="form-group has-feedback col-sm-12">
+				<label class="required">Razão social:</label>
+				<input class="form-control" 
+		  		 	   ng-model="person.name" 
+		  		 	   ng-keypress="keypress($event)" placeholder="Razão social" />
+				<span field-error="name"></span> 	   
+			</div>
+
+			<div class="form-group has-feedback col-sm-12">
+				<label class="required">Responsável:</label>
+				<input class="form-control" 
+		  		 	   ng-model="person.incharge" 
+		  		 	   ng-keypress="keypress($event)" placeholder="Nome completo" />
+				<span field-error="incharge"></span> 	   
+			</div>
+
+
+			<div class="form-group col-sm-12">
+				<label class="required">CNPJ:</label>
+				<input class="form-control" focusable 
+		  		 	   ng-model="person.cnpj" 
+		  		 	   mask="99.999.999/9999-99" clean="true"
+		  		 	   ng-keypress="keypress($event)" placeholder="CNPJ" />
+		  		<span field-error="cnpj"></span> 	    	   
+			</div>
+
+		</div>
+
+
+		<div ng-show="person.type == 'foreign'">
+			<div class="form-group has-feedback col-sm-12">
+				<label class="required">Nome completo:</label>
+				<input class="form-control"  
+		  		 	   ng-model="person.name" 
+		  		 	   ng-keypress="keypress($event)" placeholder="Nome completo" />
+				<span field-error="name"></span> 	   
+			</div>
+
+			<div class="form-group col-sm-12">
+				<label class="required">Passaporte:</label>
+				<input class="form-control" focusable 
+		  		 	   ng-model="person.passport" 
+		  		 	   ng-keypress="keypress($event)" placeholder="Passaporte" />
+		  		<span field-error="passport"></span> 	    	   
+			</div>
+		</div>
+
+		<div class="form-group has-feedback col-sm-12">
+			<label class="required">Email:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.email" 
+	  		 	   ng-keypress="keypress($event)" placeholder="Email" />
+	  		<span field-error="email"></span>
+		</div>
+
+		<div class="form-group has-feedback col-sm-12">
+			<label class="required">Telefone:</label>
+			<input class="form-control" focusable 
+	  		 	   ng-model="person.phone" 
+	  		 	   ng-keypress="keypress($event)"
+	  		 	   mask="(99) 9?9?999-9999" clean="true"
+	  		 	   placeholder="Telefone" />
+	  		<span field-error="phone"></span>
+		</div>
+
+
+
+	</div>

@@ -1,48 +1,70 @@
-<form class="choose fill">
+<form class="form">
+
   <div ng-show="!is_cashier || !options.length">
-    <h3>Atenção!</h3>
-    <h4>não é possível mudar a categoria deste participante</h4>
 
-    <div ng-show="person.status == 'stale'">
-      <h5>ingresso vencido</h5>
-      <button type="button" ng-click="backToSearch()" focusable="option-0">ok</button>
+    <div class="alert alert-danger">
+      <h4><b>Atenção!</b></h4>
+      <ul>
+        <li>Não é possível mudar a categoria deste participante</li>
+        <li ng-show="person.has_valid_ticket">Pagamento já foi efetuado!</li>
+        <li ng-show="person.status == 'stale'">Ingresso vencido!</li>
+        <li ng-show="person.category == 'promocode' && !person.has_valid_ticket">
+          Inscrição possui código promocional associado!
+        </li>
+        <li ng-show="!is_cashier">O operador logado não tem permissão para a operação!</li>
+      </ul>
     </div>
 
-    <div ng-show="person.has_valid_ticket">
-      <h5>pagamento já foi efetuado</h5>
-      <button type="button" ng-click="restart()" focusable="option-0">ok</button>
+    <div>
+      <button class="btn btn-primary"
+              ng-show="!is_cashier" ng-click="backToSearch()">Ok</button>
+      <button class="btn btn-primary"
+              ng-show="person.has_valid_ticket" ng-click="restart()">Ok</button>
+      <button class="btn btn-primary"
+              ng-show="person.status == 'stale'" ng-click="backToSearch()">Ok</button>
+      <button class="btn btn-primary"
+              ng-show="person.category == 'promocode' && !person.has_valid_ticket"
+              ng-click="goToPayment()">Ok</button>
     </div>
 
-    <div ng-show="person.category == 'promocode' && !person.has_valid_ticket">
-      <h5>inscrição possui código promocional associado</h5>
-      <button type="button" ng-click="goToPayment()" focusable="option-0">ok</button>
-    </div>
-
-    <div ng-show="!is_cashier">
-      <h5>o operador logado não tem permissão para a operação</h5>
-      <button type="button" ng-click="backToSearch()" focusable="option-0">ok</button>
-    </div>
   </div>
 
   <div ng-show="is_cashier && options.length">
     <h3 ng-show="options.length">Qual é a categoria do participante?</h3>
+    <hr>
+
     <h4 ng-show="options.length">
-      use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de categoria e
+      Use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de categoria e
       <kbd>enter</kbd> para selecionar
     </h4>
 
-    <button type="button"
-            ng-repeat="option in options" ng-click="selectOption($index)"
-            ui-keydown="keypress($index)" focusable="option-{{ $index }}">
-            {{ option.category | humanize }}: {{ option.price | realbrasileiro }}
-      <span ng-show="option.id == person.product.id">*</span>
-    </button>
-    <br/>
-    <br/>
-    <button type="button" ng-click="goToPromocode()"
-            ui-keydown="keypress(options.length)" focusable="option-{{ options.length }}">
-      usar código promocional
-    </button>
+    <hr>
+
+    <div  ng-show="isCorporate">
+      <div class="form-group">
+        <label>Quantidade:</label>
+       <input type="text" class="form-control" ng-model="qty"/>
+      </div>
+    </div>
+
+    <div>
+      <div class="btn-group-vertical" style="width:100%;">
+        <button type="button"
+                class="btn btn-primary"
+                ng-repeat="option in options" ng-click="selectOption($index)"
+                ui-keydown="keypress($index)" focusable="option-{{ $index }}">
+                {{ option.category | humanize }}: {{ option.price * qty | realbrasileiro }}
+          <span ng-show="option.id == person.product.id">*</span>
+        </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-click="goToPromocode()"
+                ui-keydown="keypress(options.length)" focusable="option-{{ options.length }}">
+              usar código promocional
+        </button>
+      </div>
+    </div>
+
   </div>
 
 </form>

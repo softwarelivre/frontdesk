@@ -1,31 +1,42 @@
-<form class="choose">
-  <h3>
-    Entregue o crachá para o participante
-  </h3>
+<form class="form">
 
-  <h4 ng-hide="person.product.gives_kit">
-    atenção! este participante não recebe material do evento
-  </h4>
+  <div>
+    <legend>Imprima e entregue o crachá para o participante:</legend>
+  </div>
 
-  <h5 ng-show="person.last_badge.given">
-    <b>Atenção!</b><br/>
-    este crachá já consta como entregue no sistema!<br/>
-    {{ person.last_badge.given | datetime_locale }}
-  </h5>
+  <div class="alert alert-warning" ng-hide="person.product.gives_kit">
+    <h4><b>Atenção!</b></h4>
+    <p>Este participante não recebe material do evento</p>
+  </div>
 
-  <h5 ng-show="flash">
-    <b>erro na impressão:</b> {{ flash }}
-  </h5>
+  <div class="alert alert-warning" ng-show="person.last_badge.given">
+    <h4><b>Atenção!</b></h4>
+    <p>Este crachá já consta como entregue no sistema! </br>
+      {{ person.last_badge.given | datetime_locale }} 
+    </p>
+  </div>
 
-  <button type="button" ng-click="given()" ui-keydown="keypress(0)" focusable="option-0">
-      okay, entregue!
-  </button>
-  <button type="button" ng-click="reprint()" ui-keydown="keypress(1)" focusable="option-1">
-      imprimir novamente
-  </button>
-  <button type="button" ng-click="editBadge()" ui-keydown="keypress(2)" focusable="option-2">
-      editar ediqueta
-  </button>
+  <div ng-show="flash">
+    <b>Erro na impressão:</b> {{ flash }}
+  </div>
+
+  <div class="form-group">
+
+    <button class="btn btn-primary"
+            type="button" ng-click="reprint()" ui-keydown="keypress(0)" focusable="option-0">
+        <span ng-show="person.last_badge">Imprimir novamente</span>
+        <span ng-show="!person.last_badge">Imprimir</span>
+    </button>
+    <button class="btn btn-primary"
+            type="button" ng-click="editBadge()" ui-keydown="keypress(1)" focusable="option-1">
+        Editar ediqueta
+    </button>
+    <button class="btn btn-primary"
+            type="button" ng-click="given()" ui-keydown="keypress(2)" focusable="option-2">
+        Okay, entregue!
+    </button>
+ 
+  </div>
 
 </form>
 

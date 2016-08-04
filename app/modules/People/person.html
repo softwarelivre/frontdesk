@@ -1,3 +1,17 @@
 <header ng-show="person" class="status-{{person.status}}" ui-view="header"></header>
-<section ng-show="person" class="data" ui-view="data"></section>
-<section class="step" ui-view="step"></section>
+
+<div class="row-fluid">
+
+	<div ng-class="isCorporate ? 'col-sm-12' : 'col-sm-7'">
+	    <section ui-view="step"></section>
+	</div>
+
+	<div class="col-sm-5" ng-hide="isCorporate">
+		<div class="panel panel-default">
+	  	  <div class="panel-body">
+			<section ng-show="person.role" ui-view="data"></section>
+		  </div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <span> Selecione um valor para a doação </span>
+</div>
+<div class="modal-body">
+
+  <form class="form-group">
+    <label>Valor para a doação: <small class="text-muted">(Mínimo 10 reais)</small></label>
+    <input class="form-control" focusable
+           ng-keydown="keypress($event)"
+           ng-model="donationOpts.amount"></input>
+  </form>
+
+</div>
+

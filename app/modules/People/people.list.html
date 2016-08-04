@@ -1,8 +1,5 @@
 <header ng-show="empty" class="centered">
   <h1>
-    ☹
-  </h1>
-  <h1>
     nenhum resultado encontrado
   </h1>
   <small>
@@ -12,32 +9,102 @@
   </small>
 </header>
 
-<form ng-class="{ loading: loading }">
-  <button ng-repeat="person in results"
-          ui-sref="people.person({ xid: person.id })"
-          focusable="result-{{$index}}"
-          ng-focus="focusHasMovedTo($index)"
-          class="status-{{person.status}}"
-          ui-keydown="keypress.person($index, $event)">
-    <figure>
-      <img gravatar-src="person.email" gravatar-size="70">
-      <figcaption>{{ person.id }}</figcaption>
-    </figure>
+<hr>
 
-    <h1 ng-hide="person.name" class="empty">sem nome</h1>
-    <h1 ng-show="person.name">{{ person.name }}</h1>
+<div class="table-responsive">
 
-    <p>{{ person.email }}</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Nome completo</th>
+      <th>E-mail</th>
+      <th>Documento</th>
+      <th>Telefone</th>
+    </tr>    
+  </thead>
 
-    <p ng-hide="person.document" class="empty">sem documento</p>
-    <p ng-show="person.document">{{ person.document | document }}</p>
+  <tbody ng-repeat="purchases in purchasesByAccount">
+    <tr  ng-class="{true: 'success', false: 'warning'}[validTickets(purchases).length > 0]"> 
+        <td ng-click="isCollapsed(purchases[0].customer_id) ? expand(purchases[0].customer_id) : collapse(purchases[0].customer_id)">
+          <i ng-show="isCollapsed(purchases[0].customer_id)" class="fa fa-plus" aria-hidden="true"></i>
+          <i ng-show="!isCollapsed(purchases[0].customer_id)" class="fa fa-minus" aria-hidden="true"></i>
+        </td>
+        <td>{{purchases[0].name}}</td>
+        <td>{{purchases[0].email}}</td>
+        <td>{{purchases[0].document}}</td>
+        <td>{{purchases[0].phone}}</td>
+    </tr>
+    <tr uib-collapse="isCollapsed(purchases[0].customer_id)">
+      <td colspan="5">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Inscrição</th>
+              <th>Produto</th><th>Categoria</th><th>Situação</th><th>Informações</th><th>Ação</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="purchase in purchases">
+            <tr ng-class="{'success':purchase.status == 'paid', 'info': purchase.has_payable_ticket, 'danger': !purchase.has_payable_ticket && purchase.status != 'paid'}">
+              <td>
+                  <span ng-switch="purchase.category">
+                    <span ng-switch-when="donation">
+                      -
+                    </span>
+                    <span ng-switch-default>
+                      {{purchase.id}}
+                    </span>
+                  </span>
+              </td>
+              <td>{{purchase.product_description}}</td>
+              <td>{{purchase.category | humanize}}</td>
+              <td>{{purchase.status   | humanize}}</td>
+              <td>
+                <span ng-show="purchase.donation_promocodes && purchase.category == 'donation' && purchase.product_description != 'Doa\u00e7\u00e3o espont\u00e2nea'">
+                  <p class="small" ng-repeat="promocode in purchase.donation_promocodes">
+                    <b>Código promocional:</b> {{promocode.hash_code}} </br> 
+                    <b>Usado:</b> <span ng-show="promocode.used">Sim</span>
+                    <span ng-show="!promocode.used">Não</span>
+                  </p>
+                </span>
+                <span ng-show="purchase.has_payable_ticket">
+                  <p>Pagamento pendente</p>                   
+                </span>
+                <span ng-show="!purchase.has_payable_ticket && purchase.status == 'pending'">
+                  <p>Pagamento atrasado</p>                   
+                </span>
+              </td>
+              <td>
+                <span ng-show="(purchase.has_valid_ticket || purchase.has_payable_ticket) && purchase.is_corporate">
+                    <button class="btn btn-sm btn-primary" 
+                            ui-sref="people.person.corporate({ xid: purchase.id })">Visualizar
+                    </button>
+                </span>
+                <span ng-show="(purchase.has_valid_ticket || purchase.has_payable_ticket) && !purchase.is_corporate">
+                      <button class="btn btn-sm btn-primary"  
+                              ui-sref="people.person({ xid: purchase.id })">Visualizar
+                      </button>
+                </span>
+                <span ng-show="!(purchase.has_valid_ticket || purchase.has_payable_ticket)">-</span>    
+              </td>
+            </tr>
+            <tr ng-show="$last">
+              <td colspan="4">
+              </td>
+              <td colspan="2">
+                  <button class="btn btn-sm btn-primary"
+                          ng-click="addNewProduct(purchase.customer_id)">Nova compra</button>
+                  <button class="btn btn-sm btn-primary"
+                          ng-click="makeDonation(purchase.customer_id)">Fazer doação</button>
+              </td>
+            </tr>
 
-    <h2>
-      <b>{{ person.category | humanize }}</b>
-      <br/>
-      <span ng-show="person.has_valid_ticket">entrada autorizada</span>
-      <span ng-hide="person.has_valid_ticket">entrada pendente</span>
-    </h2>
-  </button>
-</form>
-<br class="clear" />
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
+
+</div>

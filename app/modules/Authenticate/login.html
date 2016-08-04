@@ -1,14 +1,54 @@
-<section class="login">
-  <header>acesso restrito!</header>
-  <form novalidate name="login_form" style="max-height: 210px;">
-    <input type="text" maxlength=80
-          placeholder="email"
-          focusable required ng-model="login.email" />
-    <input type="password"
-          placeholder="senha"
-          ng-model="login.password" />
-    <button ng-click="tryLogin()">
-      entrar!
-    </button>
-  </form>
-</section>
+    <form novalidate name="login_form" grab-focus class="form">
+      <div class="row">
+        <div class="col-sm-offset-3 col-sm-6">
+          <div ng-show="nextState">
+              <div class="alert alert-info">
+                <div class="text-center" ng-switch on="nextState">
+                    <p ng-switch-when="caravaninvite.answer">
+                        Antes de aceitar ou rejeitar um convite você precisa estar logado no sistema.
+                    </p>
+                    <p ng-switch-when="invite.answer">
+                        Antes de aceitar ou rejeitar um convite você precisa estar logado no sistema.
+                    </p>
+                    <p ng-switch-default>
+                        Você deve fazer o login antes de realizar uma operação no sistema.
+                    </p>
+                </div>
+              </div>
+          </div>
+          <legend class="text-primary">Entrar na minha conta</legend>
+
+          <div class="form-group has-feedback">
+            <label class="required">
+               <span>E-mail:</span>
+            </label>
+            <input  name="email"
+                    type="text"
+                    maxlength=40
+                    ng-model="login.email"
+                    class="form-control" />
+          </div>
+
+          <div class="form-group has-feedback">
+            <label class="required">
+               <span>Senha:</span>
+            </label>
+              <input name="password"
+                     type="password"
+                     maxsize=20
+                     ng-model="login.password"
+                     class="form-control"/>
+          </div>
+
+          <div class="form-group has-feedback">
+
+            <div class="text-center">
+              <a class="btn btn-primary"
+                      ng-click="tryLogin()"
+                      translate>Entrar!</a>
+          </div>
+
+
+      </div>
+
+    </form>

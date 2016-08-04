@@ -1,9 +1,18 @@
-<div class="printer">
-  <ul>
-    <li ng-class="{ selected: printer == currentPrinter }"
-        ng-click="setCurrent(printer)"
-        ng-repeat="printer in allPrinters">
-      {{ printer }}
-    </li>
-  </ul>
-</div>
+<ul class="nav navbar-nav navbar-right">
+	<li uib-dropdown class="dropdown" ng-show="credentials">
+	  <a uib-dropdown-toggle role="button"  href="#">
+	  	<i class="fa fa-print" aria-hidden="true"></i><span class="caret"></span>
+	  </a>
+	  <ul uib-dropdown-menu class="dropdown-menu">
+		    <li ng-class="{ selected: printer == currentPrinter }"
+	        	ng-click="setCurrent(printer)"
+	        	ng-repeat="printer in allPrinters">
+	      	<a>
+	      		<i class="fa fa-check" 
+	      		   aria-hidden="true"
+	      		   ng-show="printer == currentPrinter"></i>&nbsp;{{ printer }}
+	      	</a>
+		</li>
+	  </ul>
+	</li>
+</ul>

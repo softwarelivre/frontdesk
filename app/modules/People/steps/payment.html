@@ -1,48 +1,73 @@
-<form class="choose payment">
-  <div ng-show="!is_cashier || !person.product.can_pay_cash">
-    <h3>Atenção!</h3>
-    <h4>não é possível pagar este ingresso</h4>
+<form class="form">
+  
 
-    <div ng-show="person.status == 'stale'">
-      <h5>ingresso vencido</h5>
-      <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
-    </div>
-
-    <div ng-show="!is_cashier">
-      <h5>o operador logado não tem permissão para a operação</h5>
-      <button type="button" ng-click="cannotBePaid()" focusable="option-0">ok</button>
+  <div class="alert alert-danger" ng-show="!is_cashier || !person.product.can_pay_cash">
+    <h4><b>Atenção!</b></h4>
+    <ul>
+      <li>Não é possível pagar este ingresso</li>
+      <li ng-show="person.status == 'stale'">Ingresso vencido</li>
+      <li ng-show="!is_cashier">O operador logado não tem permissão para a operação</li>
+    </ul>
+    
+    <div>
+      <button class="btn btn-primary"
+              ng-click="cannotBePaid()" focusable="option-0">Ok</button>
     </div>
   </div>
 
+
   <div ng-show="is_cashier && person.product.can_pay_cash">
     <h2>
-      cobre o valor abaixo
+      Cobre o valor: <strong>R$ {{ person.outstanding_amount }}</strong>
     </h2>
 
-    <h1>
-      R$ {{ person.outstanding_amount }}
-    </h1>
+    <div class="alert alert-warning" ng-show="person.product.category == 'student'">
+      <h4><b>Atenção!!</b></h4>
+      <p>Antes de prosseguir, verifique o documento que comprove o vínculo estudantil.</p>
+    </div>
+
+    <hr>
 
     <h4>
-      use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de método<br/>
+      Use <kbd>&#8593;</kbd> e <kbd>&#8595;</kbd> para trocar de método<br/>
       de pagamento, <kbd>enter</kbd> para selecionar
     </h4>
 
+    <hr>
 
-    <button type="button" ng-click="receivedCash()"  ui-keydown="keypress(0)" focusable="option-0">
-        recebido em dinheiro
-    </button>
-    <button type="button" ng-click="receivedCard()"  ui-keydown="keypress(1)" focusable="option-1">
-        recebido em cartão de crédito
-    </button>
-    <button type="button" ng-click="didNotReceive()" ui-keydown="keypress(2)" focusable="option-2">
-        não recebi o dinheiro
-    </button>
+    <div class="btn-group-vertical" style="width:100%;">
+   
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="receivedCash()"  ui-keydown="keypress(0)" focusable="option-0">
+          Recebido em dinheiro
+      </button>
 
-    <br/>
-    <br/>
-    <button type="button" ng-click="goToPromocode()" ui-keydown="keypress(3)" focusable="option-3">
-      usar código promocional
-    </button>
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="receivedCard()"  ui-keydown="keypress(1)" focusable="option-1">
+          Recebido em cartão de crédito
+      </button>
+      <button type="button" 
+              class="btn btn-primary"
+              ng-click="didNotReceive()" ui-keydown="keypress(2)" focusable="option-2">
+          Não recebi o pagamento
+      </button>
+      
+      <button type="button"
+              class="btn btn-primary"
+              ng-show="person.product.category == 'student'"
+              ng-click="didNotReceiveStudentDocument()" 
+              ui-keydown="keypress(3)" focusable="option-3">
+          Não recebi o comprovante de vínculo estudantil
+      </button>
+
+      <button type="button" 
+              class="btn btn-default"
+              ng-click="goToPromocode()" ui-keydown="keypress(4)" focusable="option-4">
+          Usar código promocional
+      </button>
+
+    </div>
   </div>
 </form>

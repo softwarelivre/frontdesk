@@ -4,12 +4,13 @@
   angular
     .module('segue.frontdesk')
     .constant('Config', {
-      API_HOST: 'http://192.168.33.91',
+      API_HOST: 'http://segue-api.dev.softwarelivre.org',
       API_PATH: '/api',
+      GOOGLE_GEO_API: 'http://maps.googleapis.com/maps/api/geocode/json',
       DEFAULT_COUNTRIES: ['Brasil','Argentina','Uruguai'],
       TIMEZONE: '-0300',
       DEFAULT_PRINTER: 'vagrant',
-      EVENT_DAYS: ["2015-07-08","2015-07-09","2015-07-10","2015-07-11"]
+      EVENT_DAYS: ["2016-06-13","2016-07-14","2016-07-15","2016-07-16"]
     });
 
 })();
