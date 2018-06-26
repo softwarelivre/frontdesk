@@ -101,16 +101,20 @@
       self.isCashier = function() {
         var credentials = self.credentials();
         if (!credentials) { return false; }
-        return self.hasRole(credentials, 'cashier') or self.hasRole(credentials, 'admin')
+        return self.hasRole(credentials, 'cashier') || self.hasRole(credentials, 'admin')
       };
 
-      self.hasRole = function(credential, role) {
-        if (!credential) { return false;}
-        for(var i=0; i < credential.roles.length; i++) {
-          if(credential.roles[i].name === role) { return true; }
+      self.hasRole = function(account, role) {
+        if (!account) { return false;}
+        return account.role == role;
+        /*
+        for(var i=0; i < account.roles.length; i++) {
+          if(account.roles[i].name === role) { return true; }
         }
         return false;
+        */
       }
+
 
       self.glue = function(target, name) {
         $rootScope.$on('auth:changed', function(_,d) { target[name] = d; });

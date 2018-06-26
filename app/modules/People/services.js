@@ -104,27 +104,25 @@
         return people.one(xid).one('pay').post('donation', { mode: mode });
       };
 
-      extensions.isUser = function(account) {
-        return extensions.hasRole(account, 'user');
+      self.isUser = function(account) {
+        return self.hasRole(account, 'user');
       };
 
-      extensions.isAdmin = function(account) {
-        return extensions.hasRole(account, 'admin');
+      self.isAdmin = function(account) {
+        return self.hasRole(account, 'admin');
       };
 
-      extensions.isForeign = function(account) {
-        return extensions.hasRole(account, 'foreign');
+      self.isForeign = function(account) {
+        return self.hasRole(account, 'foreign');
       };
 
-      extensions.isCorporate = function(account) {
-        return extensions.hasRole(account, 'corporate');
+      self.isCorporate = function(account) {
+        return self.hasRole(account, 'corporate');
       }
 
-      extensions.hasRole = function(account, role) {
-        for(var i=0; i < account.roles.length; i++) {
-          if(account.roles[i].name === role) { return true; }
-        }
-        return false;
+      self.hasRole = function(account, role) {
+        if (!account) { return false;}
+        return account.role == role;
       }
 
       return self;
