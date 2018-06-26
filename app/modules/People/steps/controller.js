@@ -441,9 +441,11 @@
       if (!$scope.person.has_valid_ticket) { $scope.restart(); return; }
 
       $scope.given = function() {
-        People.giveBadge($scope.person.last_badge.id)
-              .then(_.partial($scope.fastForward, 'people.person.done'))
-              .catch(FormErrors.set);
+        if($scope.person.last_badge) {
+          People.giveBadge($scope.person.last_badge.id)
+                .then(_.partial($scope.fastForward, 'people.person.done'))
+                .catch(FormErrors.set);
+        }
       };
 
       $scope.reprint = function() {
