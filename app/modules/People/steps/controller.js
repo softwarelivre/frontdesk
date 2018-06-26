@@ -357,7 +357,7 @@
               .catch(FormErrors.set);
       };
       $scope.receivedCard = function() {
-        People.receivedPayment($scopeperson.id, 'card')
+        People.receivedPayment($scope.person.id, 'card')
               .then(onReceivePayment)
               .catch(FormErrors.set);
       };
