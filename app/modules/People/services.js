@@ -52,6 +52,11 @@
       self.printBadge = function(xid) {
         return people.one(xid).post('badge', { printer: Printers.getCurrent() });
       };
+
+      self.printDonationBadge = function(xid) {
+        return people.one(xid).post('badge-donation', { printer: Printers.getCurrent() });
+      };
+
       self.giveBadge = function(badgeId) {
         return badges.one(badgeId).post('give');
       };

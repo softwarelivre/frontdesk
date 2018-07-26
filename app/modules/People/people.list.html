@@ -85,6 +85,11 @@
                               ui-sref="people.person({ xid: purchase.id })">Visualizar
                       </button>
                 </span>
+                <span ng-show="purchase.status == 'paid'">
+                  <button class="btn btn-sm btn-primary" ng-click="printDonationBadge(purchase.id)">
+                      <i class="fa fa-print" aria-hidden="true"></i>
+                  </button>
+                </span>
                 <span ng-show="!(purchase.has_valid_ticket || purchase.has_payable_ticket)">-</span>    
               </td>
             </tr>

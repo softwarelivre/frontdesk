@@ -110,19 +110,20 @@
         <label >Minicurrículo:</label>
         <textarea class="form-control" 
                ng-model="speaker.resume" 
-               placeholder="Minicurrículo" />
-        </textarea>
+               placeholder="Minicurrículo"
+               ng-keypress="keypress($event)" />
         <span field-error="resume"></span>     
       </div>
    </div>
 
+   <!--
    <div class="row">
       <div class="form-group col-sm-12">
         <button class="btn btn-primary" 
                 ng-click="submit()">Cadastrar</button>
       </div>
    </div>
-
+-->
 
 
 </form>

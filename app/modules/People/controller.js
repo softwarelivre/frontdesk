@@ -218,6 +218,22 @@
               });
       };
 
+      $scope.printDonationBadge = function(purchase_id) {
+        People.printDonationBadge(purchase_id)
+              .then(function(response) {
+                ngToast.create({
+                  content: 'Crachá enviado para a impressão.',
+                  PurclassName: 'success',
+                });
+              })
+              .catch(function(error) {
+                  ngToast.create({
+                    content:'Houve um na hora de imprimir.',
+                    PurclassName: 'danger',
+                  });
+              });
+      };
+
       $scope.giveBadge = function() {
         if($scope.person) {
           People.giveBadge($scope.person.last_badge.id)
